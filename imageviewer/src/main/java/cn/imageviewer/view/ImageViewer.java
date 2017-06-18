@@ -79,7 +79,7 @@ public class ImageViewer extends DialogFragment {
         viewPager.setCurrentItem(index);
     }
 
-    public <T> ImageViewer setPaths(List<T> objects, ImageLoadHelper imageLoadHelper) {
+    public <T> ImageViewer setPaths(List<T> objects, ImageLoadHelper<T> imageLoadHelper) {
         this.imageLoadHelper = imageLoadHelper;
         if (objects != null) {
             for (T t : objects) {

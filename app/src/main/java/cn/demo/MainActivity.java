@@ -38,10 +38,9 @@ public class MainActivity extends AppCompatActivity {
                 ImageViewer.newInstance()
                         .setIndex(0)
                         .setPaths(paths, new ImageLoadHelper<String>() {
-
                             @Override
-                            public String tramsformPaths(String s) {
-                                return s;
+                            public String tramsformPaths(String path) {
+                                return path;
                             }
 
                             @Override
