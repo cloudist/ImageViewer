@@ -37,10 +37,11 @@ public class MainActivity extends AppCompatActivity {
 
                 ImageViewer.newInstance()
                         .setIndex(0)
-                        .setPaths(paths, new ImageLoadHelper() {
+                        .setPaths(paths, new ImageLoadHelper<String>() {
+
                             @Override
-                            public <T> String tramsformPaths(T t) {
-                                return (String) t;
+                            public String tramsformPaths(String s) {
+                                return s;
                             }
 
                             @Override
@@ -49,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
                                         .load(path)
                                         .into(imageView);
                             }
-
                         })
                         .setClickHelper(new ImageClickHelper() {
                             @Override
