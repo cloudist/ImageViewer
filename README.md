@@ -36,7 +36,7 @@
 
             Glide.with(OCApplication.getContext())
                     .load(path)
-                    .into(imageView);
+                    .into(photoView);
         }
 
     })
