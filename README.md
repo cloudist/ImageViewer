@@ -7,10 +7,11 @@
                         //传入所需的pathList 以及加载方式 ImageLoadHelper（必须） 
                         //pastlist里的对象可以是任意的，需要在tramsformPaths的返回String类型的url
                         //showImage方法里可以自定义你想要的加载方式 例子中的是Glide
-                        .setPaths(paths, new ImageLoadHelper() {
+                        .setPaths(paths, new ImageLoadHelper<String>() {
+
                             @Override
-                            public <T> String tramsformPaths(T t) {
-                                return (String) t;
+                            public String tramsformPaths(String path) {
+                                return path;
                             }
 
                             @Override
