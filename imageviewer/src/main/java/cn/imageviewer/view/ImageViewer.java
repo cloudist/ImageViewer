@@ -13,9 +13,8 @@ import android.view.Window;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.imageviewer.adapter.ViewpagerAdapter;
 import cn.imageviewer.R;
-import cn.imageviewer.helper.ImageClickHelper;
+import cn.imageviewer.adapter.ViewpagerAdapter;
 import cn.imageviewer.helper.ImageLoadHelper;
 
 /**
@@ -30,7 +29,6 @@ public class ImageViewer extends DialogFragment {
     int index = 0;
     List<String> paths = new ArrayList<>();
     ImageLoadHelper imageLoadHelper;
-    ImageClickHelper imageClickHelper;
 
     public static ImageViewer newInstance() {
         Bundle args = new Bundle();
@@ -73,7 +71,6 @@ public class ImageViewer extends DialogFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewpagerAdapter(getActivity(), imageLoadHelper, paths);
-        adapter.setClickListener(imageClickHelper);
         viewPager.setOffscreenPageLimit(paths.size());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(index);
@@ -94,8 +91,4 @@ public class ImageViewer extends DialogFragment {
         return ImageViewer.this;
     }
 
-    public ImageViewer setClickHelper(ImageClickHelper imageClickHelper) {
-        this.imageClickHelper = imageClickHelper;
-        return ImageViewer.this;
-    }
 }

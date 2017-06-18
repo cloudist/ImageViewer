@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -12,8 +11,9 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.imageviewer.helper.ImageClickHelper;
 import cn.imageviewer.helper.ImageLoadHelper;
+import cn.imageviewer.photoviewer.PhotoView;
+import cn.imageviewer.photoviewer.PhotoViewAttacher;
 import cn.imageviewer.view.ImageViewer;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,22 +44,26 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void showImage(int position, String path, ImageView imageView) {
+                            public void showImage(final int position, String path, PhotoView photoView) {
+
+                                photoView.setOnLongClickListener(new View.OnLongClickListener() {
+                                    @Override
+                                    public boolean onLongClick(View v) {
+                                        Toast.makeText(MainActivity.this, "onLongClick" + position, Toast.LENGTH_SHORT).show();
+                                        return false;
+                                    }
+                                });
+
+                                photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                                    @Override
+                                    public void onPhotoTap(View view, float x, float y) {
+                                        Toast.makeText(MainActivity.this, "onSingleClick" + position, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
                                 Glide.with(OCApplication.getContext())
                                         .load(path)
-                                        .into(imageView);
-                            }
-                        })
-                        .setClickHelper(new ImageClickHelper() {
-                            @Override
-                            public boolean onLongClick(View view, int position) {
-                                Toast.makeText(MainActivity.this, "onLongClick", Toast.LENGTH_SHORT).show();
-                                return false;
-                            }
-
-                            @Override
-                            public void onSingleClick(View view, int position) {
-                                Toast.makeText(MainActivity.this, "onSingleClick", Toast.LENGTH_SHORT).show();
+                                        .into(photoView);
                             }
                         })
                         .show(getSupportFragmentManager(), "ImageViewer");

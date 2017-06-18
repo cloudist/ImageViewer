@@ -1,6 +1,6 @@
 package cn.imageviewer.helper;
 
-import android.widget.ImageView;
+import cn.imageviewer.photoviewer.PhotoView;
 
 /**
  * Created by cloudist on 2017/6/18.
@@ -9,5 +9,5 @@ import android.widget.ImageView;
 public interface ImageLoadHelper<T> {
     String tramsformPaths(T t);
 
-    void showImage(int position, String path, ImageView imageView);
+    void showImage(int position, String path, PhotoView photoView);
 }

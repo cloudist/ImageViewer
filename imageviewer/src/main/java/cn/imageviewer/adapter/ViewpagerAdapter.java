@@ -7,16 +7,13 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.imageviewer.R;
-import cn.imageviewer.helper.ImageClickHelper;
 import cn.imageviewer.helper.ImageLoadHelper;
 import cn.imageviewer.photoviewer.PhotoView;
-import cn.imageviewer.photoviewer.PhotoViewAttacher;
 
 /**
  * Created by cloudist on 2017/3/21.
@@ -29,7 +26,6 @@ public class ViewpagerAdapter extends PagerAdapter {
     private List<String> paths = new ArrayList<>();
 
     private Context mContext;
-    private ImageClickHelper imageClickHelper;
     private ImageLoadHelper imageHelper;
 
     public ViewpagerAdapter(Context context, ImageLoadHelper imageHelper, List<String> paths) {
@@ -37,17 +33,6 @@ public class ViewpagerAdapter extends PagerAdapter {
         this.imageHelper = imageHelper;
         this.paths = paths;
         drawableArray = new SparseArray<>(paths.size());
-    }
-
-//    public ViewpagerAdapter(Context context, ImageLoadHelper imageHelper, List<String> paths) {
-//        this.paths = paths;
-//        this.mContext = context;
-//        this.imageHelper = imageHelper;
-//        drawableArray = new SparseArray<>(paths.size());
-//    }
-
-    public void setClickListener(ImageClickHelper imageClickHelper) {
-        this.imageClickHelper = imageClickHelper;
     }
 
     /**
@@ -81,28 +66,9 @@ public class ViewpagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         //new ImageView并设置全屏和图片资源
         View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_switch_photo, container, false);
-        PhotoView imageView = (PhotoView) view.findViewById(R.id.dialog_image);
+        PhotoView photoView = (PhotoView) view.findViewById(R.id.dialog_image);
 
-        imageHelper.showImage(position, paths.get(position), imageView);
-
-        imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-            @Override
-            public void onPhotoTap(View view, float x, float y) {
-                if (imageClickHelper != null) {
-                    imageClickHelper.onSingleClick(view, position);
-                }
-            }
-        });
-
-        imageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (imageClickHelper != null) {
-                    return imageClickHelper.onLongClick(v, position);
-                }
-                return false;
-            }
-        });
+        imageHelper.showImage(position, paths.get(position), photoView);
 
         container.addView(view);
         return view;
