@@ -1,9 +1,8 @@
 # ImageViewer
 图片浏览器
 ## 1.代码参考
-                    //初始化图片集合
+                    //初始化图片集合
                     List<String> paths = new ArrayList
-                    
                     ImageViewer.newInstance()
                          //用来设置默认位置
                         .setIndex(0)
