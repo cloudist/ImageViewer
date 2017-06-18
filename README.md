@@ -7,7 +7,7 @@
          //用来设置默认位置
         .setIndex(0)
         //传入所需的pathList 以及加载方式 ImageLoadHelper（必须） 
-        //ImageLoadHelper<T>的T与List<T> paths的T要一致
+    //ImageLoadHelper<T>的T与List<T> paths的T要一致
         //paths里的对象可以是任意的，在tramsformPaths完成转换即可
         //showImage方法里可以自定义你想要的加载方式 例子中的是Glide
         .setPaths(paths, new ImageLoadHelper<String>() {
