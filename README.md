@@ -23,6 +23,7 @@ Step 2. Add the dependency
 
 ## Sample Code
 
+```Java
     List<String> paths = new ArrayList();
     ImageViewer.newInstance()
             .setIndex(0) // Default index
@@ -54,3 +55,4 @@ Step 2. Add the dependency
                 }
             })
             .show(getSupportFragmentManager(), "ImageViewer");
+```
