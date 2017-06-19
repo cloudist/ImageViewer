@@ -16,6 +16,8 @@ import java.util.List;
 import cn.imageviewer.R;
 import cn.imageviewer.adapter.ViewpagerAdapter;
 import cn.imageviewer.helper.ImageLoadHelper;
+import cn.imageviewer.helper.OnImageLongClick;
+import cn.imageviewer.helper.OnImageSingleClick;
 
 /**
  * Created by cloudist on 2017/5/31.
@@ -29,6 +31,8 @@ public class ImageViewer extends DialogFragment {
     int index = 0;
     List<String> paths = new ArrayList<>();
     ImageLoadHelper imageLoadHelper;
+    private OnImageSingleClick onImageSingleClick;
+    private OnImageLongClick onImageLongClick;
 
     public static ImageViewer newInstance() {
         Bundle args = new Bundle();
@@ -71,6 +75,8 @@ public class ImageViewer extends DialogFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewpagerAdapter(getActivity(), imageLoadHelper, paths);
+        adapter.setOnImageLongClick(onImageLongClick);
+        adapter.setOnImageSingleClick(onImageSingleClick);
         viewPager.setOffscreenPageLimit(paths.size());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(index);
@@ -91,4 +97,13 @@ public class ImageViewer extends DialogFragment {
         return ImageViewer.this;
     }
 
+    public ImageViewer setOnImageSingleClick(OnImageSingleClick onImageSingleClick) {
+        this.onImageSingleClick = onImageSingleClick;
+        return ImageViewer.this;
+    }
+
+    public ImageViewer setOnImageLongClick(OnImageLongClick onImageLongClick) {
+        this.onImageLongClick = onImageLongClick;
+        return ImageViewer.this;
+    }
 }

@@ -6,9 +6,24 @@
     ImageViewer.newInstance()
      //用来设置默认位置
     .setIndex(0)
+    //用来设置单按事件
+    .setOnImageSingleClick(new OnImageSingleClick() {
+        @Override
+        public void onImageSingleClick(int position, String path, PhotoView photoView) {
+            Toast.makeText(MainActivity.this, "onSingleClick" + position, Toast.LENGTH_SHORT).show();
+        }
+    })
+    //用来设置长按事件
+    .setOnImageLongClick(new OnImageLongClick() {
+        @Override
+        public boolean onImageLongClick(int position, String path, PhotoView photoView) {
+            Toast.makeText(MainActivity.this, "onLongClick" + position, Toast.LENGTH_SHORT).show();
+            return true;
+        }
+    })
     //传入所需的pathList 以及加载方式 ImageLoadHelper（必须）
     //paths里的对象可以是任意的，在tramsformPaths完成转换即可
-    //showImage方法里可以自定义你想要的加载方式(例子中使用的是Glide)以及对应的点击事件
+    //showImage方法里可以自定义你想要的加载方式(例子中使用的是Glide)
     .setPaths(paths, new ImageLoadHelper<String>() {
 
         @Override

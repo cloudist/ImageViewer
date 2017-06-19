@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.imageviewer.helper.ImageLoadHelper;
+import cn.imageviewer.helper.OnImageLongClick;
+import cn.imageviewer.helper.OnImageSingleClick;
 import cn.imageviewer.photoviewer.PhotoView;
 import cn.imageviewer.photoviewer.PhotoViewAttacher;
 import cn.imageviewer.view.ImageViewer;
@@ -37,6 +39,19 @@ public class MainActivity extends AppCompatActivity {
 
                 ImageViewer.newInstance()
                         .setIndex(0)
+                        .setOnImageSingleClick(new OnImageSingleClick() {
+                            @Override
+                            public void onImageSingleClick(int position, String path, PhotoView photoView) {
+                                Toast.makeText(MainActivity.this, "onSingleClick" + position, Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setOnImageLongClick(new OnImageLongClick() {
+                            @Override
+                            public boolean onImageLongClick(int position, String path, PhotoView photoView) {
+                                Toast.makeText(MainActivity.this, "onLongClick" + position, Toast.LENGTH_SHORT).show();
+                                return true;
+                            }
+                        })
                         .setPaths(paths, new ImageLoadHelper<String>() {
                             @Override
                             public String tramsformPaths(String path) {
@@ -44,23 +59,7 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void showImage(final int position, String path, PhotoView photoView) {
-
-                                photoView.setOnLongClickListener(new View.OnLongClickListener() {
-                                    @Override
-                                    public boolean onLongClick(View v) {
-                                        Toast.makeText(MainActivity.this, "onLongClick" + position, Toast.LENGTH_SHORT).show();
-                                        return false;
-                                    }
-                                });
-
-                                photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-                                    @Override
-                                    public void onPhotoTap(View view, float x, float y) {
-                                        Toast.makeText(MainActivity.this, "onSingleClick" + position, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-
+                            public void showImage(int position, String path, PhotoView photoView) {
                                 Glide.with(OCApplication.getContext())
                                         .load(path)
                                         .into(photoView);
