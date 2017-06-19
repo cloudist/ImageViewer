@@ -29,10 +29,15 @@ public class MainActivity extends AppCompatActivity {
 
         Button button = (Button) findViewById(R.id.button);
         paths = new ArrayList<>();
-        paths.add("https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2847494274,442712643&fm=26&gp=0.jpg");
-        paths.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1497737727892&di=49a8bb543d3c4c620214b5cc37af2cbb&imgtype=0&src=http%3A%2F%2Fimage.tianjimedia.com%2FuploadImages%2F2015%2F285%2F24%2F586K2UOWHG9D.jpg");
-        paths.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1497737727892&di=7647dd2161a5e3b0bb2146eb45179d0b&imgtype=0&src=http%3A%2F%2Fm2.biz.itc.cn%2Fpic%2Fnew%2Fn%2F85%2F13%2FImg6941385_n.jpg");
-        paths.add("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1497737727631&di=eea1e1284255cdccceb09a600368cd26&imgtype=0&src=http%3A%2F%2Fpic.jj20.com%2Fup%2Fallimg%2F512%2F0R112123213%2F120R1123213-10.jpg");
+        paths.add("http://i2.sinaimg.cn/travel/2015/0715/U10172P704DT20150715110013.png");
+        paths.add("http://img02.tooopen.com/images/20150628/tooopen_sy_132149827682.jpg");
+        paths.add("http://img02.tooopen.com/images/20160330/tooopen_sy_157749743148.jpg");
+        paths.add("http://pic.qiantucdn.com/58pic/17/99/58/34R58PICpKy_1024.jpg");
+        paths.add("http://tupian.enterdesk.com/2013/mxy/12/07/3/4.jpg");
+        paths.add("http://pic.58pic.com/58pic/13/40/15/62958PICTq7_1024.jpg");
+        paths.add("http://pic.qiantucdn.com/58pic/11/69/82/58PIC2Q58PICsY9.jpg");
+        paths.add("http://img05.tooopen.com/images/20150630/tooopen_sy_132344141259.jpg");
+        paths.add("http://img3.3lian.com/2013/v11/41/d/81.jpg");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
