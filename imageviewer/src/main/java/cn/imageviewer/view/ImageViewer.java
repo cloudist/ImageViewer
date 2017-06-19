@@ -77,6 +77,7 @@ public class ImageViewer extends DialogFragment {
         adapter = new ViewpagerAdapter(getActivity(), imageLoadHelper, paths);
         adapter.setOnImageLongClick(onImageLongClick);
         adapter.setOnImageSingleClick(onImageSingleClick);
+        viewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.imgeviewer_margin));
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(index);
