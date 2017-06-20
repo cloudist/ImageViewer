@@ -1,7 +1,7 @@
 package cn.demo;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -14,9 +14,8 @@ import java.util.List;
 import cn.imageviewer.helper.ImageLoadHelper;
 import cn.imageviewer.helper.OnImageLongClick;
 import cn.imageviewer.helper.OnImageSingleClick;
-import cn.imageviewer.photoviewer.PhotoView;
-import cn.imageviewer.photoviewer.PhotoViewAttacher;
 import cn.imageviewer.view.ImageViewer;
+import uk.co.senab.photoview.PhotoView;
 
 public class MainActivity extends AppCompatActivity {
 

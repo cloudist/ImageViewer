@@ -6,13 +6,13 @@
     android:layout_gravity="center"
     android:orientation="vertical">
 
-    <cn.imageviewer.photoviewer.PhotoView
+    <uk.co.senab.photoview.PhotoView
         android:id="@+id/dialog_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:src="@color/image_viewer_black_deep"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter" />
+        android:gravity="center_horizontal"
+        android:scaleType="fitCenter"
+        android:src="@color/image_viewer_black_deep" />
 
 </LinearLayout>

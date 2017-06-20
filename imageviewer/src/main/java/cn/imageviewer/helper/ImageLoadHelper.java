@@ -1,6 +1,6 @@
 package cn.imageviewer.helper;
 
-import cn.imageviewer.photoviewer.PhotoView;
+import uk.co.senab.photoview.PhotoView;
 
 /**
  * Created by cloudist on 2017/6/18.

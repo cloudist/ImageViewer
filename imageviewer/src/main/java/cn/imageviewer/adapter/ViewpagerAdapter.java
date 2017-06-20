@@ -1,9 +1,7 @@
 package cn.imageviewer.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +13,14 @@ import cn.imageviewer.R;
 import cn.imageviewer.helper.ImageLoadHelper;
 import cn.imageviewer.helper.OnImageLongClick;
 import cn.imageviewer.helper.OnImageSingleClick;
-import cn.imageviewer.photoviewer.PhotoView;
-import cn.imageviewer.photoviewer.PhotoViewAttacher;
+import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by cloudist on 2017/3/21.
  */
 
 public class ViewpagerAdapter extends PagerAdapter {
-
-    private SparseArray<Bitmap> drawableArray;
 
     private List<String> paths = new ArrayList<>();
 
@@ -37,7 +33,6 @@ public class ViewpagerAdapter extends PagerAdapter {
         this.mContext = context;
         this.imageHelper = imageHelper;
         this.paths = paths;
-        drawableArray = new SparseArray<>(paths.size());
     }
 
     /**
