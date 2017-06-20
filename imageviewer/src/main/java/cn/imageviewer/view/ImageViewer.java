@@ -93,6 +93,14 @@ public class ImageViewer extends DialogFragment {
         return ImageViewer.this;
     }
 
+    public void showProgress(int position) {
+        adapter.showProgress(position);
+    }
+
+    public void hideProgress(int position) {
+        adapter.hideProgress(position);
+    }
+
     public ImageViewer setIndex(int index) {
         this.index = index;
         return ImageViewer.this;

@@ -7,6 +7,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ImageViewer.newInstance()
-                        .setIndex(0)
+                final ImageViewer imageViewer = ImageViewer.newInstance();
+                imageViewer.setIndex(0)
                         .setOnImageSingleClick(new OnImageSingleClick() {
                             @Override
                             public void onImageSingleClick(int position, String path, PhotoView photoView) {
@@ -63,9 +66,23 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void showImage(int position, String path, PhotoView photoView) {
+                            public void showImage(final int position, String path, PhotoView photoView) {
+                                imageViewer.showProgress(position);
                                 Glide.with(OCApplication.getContext())
                                         .load(path)
+                                        .listener(new RequestListener<String, GlideDrawable>() {
+                                            @Override
+                                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                                imageViewer.hideProgress(position);
+                                                return false;
+                                            }
+
+                                            @Override
+                                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                                imageViewer.hideProgress(position);
+                                                return false;
+                                            }
+                                        })
                                         .into(photoView);
                             }
                         })

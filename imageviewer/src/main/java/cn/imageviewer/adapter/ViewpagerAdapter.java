@@ -2,9 +2,11 @@ package cn.imageviewer.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class ViewpagerAdapter extends PagerAdapter {
 
     private List<String> paths = new ArrayList<>();
+    private SparseArray<View> views;
 
     private Context mContext;
     private ImageLoadHelper imageHelper;
@@ -33,6 +36,8 @@ public class ViewpagerAdapter extends PagerAdapter {
         this.mContext = context;
         this.imageHelper = imageHelper;
         this.paths = paths;
+
+        views = new SparseArray<>(paths.size());
     }
 
     /**
@@ -68,6 +73,7 @@ public class ViewpagerAdapter extends PagerAdapter {
         View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_switch_photo, container, false);
         final PhotoView photoView = (PhotoView) view.findViewById(R.id.dialog_image);
 
+        views.put(position, view);
         imageHelper.showImage(position, paths.get(position), photoView);
 
         if (onImageSingleClick != null) {
@@ -95,6 +101,18 @@ public class ViewpagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
         container.removeView((View) object);
+    }
+
+    public void showProgress(int position) {
+        View view = views.get(position);
+        RelativeLayout progressBarLayout = (RelativeLayout) view.findViewById(R.id.progressBar_layout);
+        progressBarLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgress(int position) {
+        View view = views.get(position);
+        RelativeLayout progressBarLayout = (RelativeLayout) view.findViewById(R.id.progressBar_layout);
+        progressBarLayout.setVisibility(View.GONE);
     }
 
     public void setOnImageSingleClick(OnImageSingleClick onImageSingleClick) {
