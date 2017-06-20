@@ -25,8 +25,8 @@ Step 2. Add the dependency
 
 ```Java
     List<String> paths = new ArrayList();
-    ImageViewer.newInstance()
-            .setIndex(0) // Default index
+    final ImageViewer imageViewer = ImageViewer.newInstance();
+    imageViewer.setIndex(0)
             .setOnImageSingleClick(new OnImageSingleClick() {
                 @Override
                 public void onImageSingleClick(int position, String path, PhotoView photoView) {
@@ -47,10 +47,23 @@ Step 2. Add the dependency
                 }
 
                 @Override
-                public void showImage(int position, String path, PhotoView photoView) {
-                    // Load images
+                public void showImage(final int position, String path, PhotoView photoView) {
+                    imageViewer.showProgress(position);
                     Glide.with(OCApplication.getContext())
                             .load(path)
+                            .listener(new RequestListener<String, GlideDrawable>() {
+                                @Override
+                                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                    imageViewer.hideProgress(position);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                    imageViewer.hideProgress(position);
+                                    return false;
+                                }
+                            })
                             .into(photoView);
                 }
             })
