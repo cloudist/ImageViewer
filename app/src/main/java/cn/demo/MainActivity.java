@@ -14,9 +14,11 @@ import com.bumptech.glide.request.target.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.imageviewer.helper.ImageLoadHelper;
+import cn.imageviewer.helper.ImageLoader;
+import cn.imageviewer.helper.ImageTramsform;
 import cn.imageviewer.helper.OnImageLongClick;
 import cn.imageviewer.helper.OnImageSingleClick;
+import cn.imageviewer.helper.OnLoadListener;
 import cn.imageviewer.view.ImageViewer;
 import uk.co.senab.photoview.PhotoView;
 
@@ -44,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final ImageViewer imageViewer = ImageViewer.newInstance();
-                imageViewer.setIndex(0)
+                ImageViewer.newInstance()
+                        .setIndex(0)
                         .setOnImageSingleClick(new OnImageSingleClick() {
                             @Override
                             public void onImageSingleClick(int position, String path, PhotoView photoView) {
@@ -59,27 +61,29 @@ public class MainActivity extends AppCompatActivity {
                                 return true;
                             }
                         })
-                        .setPaths(paths, new ImageLoadHelper<String>() {
+                        .setPaths(paths, new ImageTramsform<String>() {
                             @Override
                             public String tramsformPaths(String path) {
                                 return path;
                             }
-
+                        })
+                        .setImageLoader(new ImageLoader() {
                             @Override
-                            public void showImage(final int position, String path, PhotoView photoView) {
-                                imageViewer.showProgress(position);
+                            public void showImage(final int position, String path, PhotoView photoView, final OnLoadListener onLoadListener) {
+                                onLoadListener.onStart(position);
                                 Glide.with(OCApplication.getContext())
                                         .load(path)
+                                        .placeholder(R.mipmap.ic_launcher)
                                         .listener(new RequestListener<String, GlideDrawable>() {
                                             @Override
                                             public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                                imageViewer.hideProgress(position);
+                                                onLoadListener.onError(position);
                                                 return false;
                                             }
 
                                             @Override
                                             public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                                imageViewer.hideProgress(position);
+                                                onLoadListener.onSuccess(position);
                                                 return false;
                                             }
                                         })

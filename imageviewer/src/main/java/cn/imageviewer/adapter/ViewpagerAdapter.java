@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.imageviewer.R;
-import cn.imageviewer.helper.ImageLoadHelper;
+import cn.imageviewer.helper.ImageLoader;
 import cn.imageviewer.helper.OnImageLongClick;
 import cn.imageviewer.helper.OnImageSingleClick;
+import cn.imageviewer.helper.OnLoadListener;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -28,13 +29,13 @@ public class ViewpagerAdapter extends PagerAdapter {
     private SparseArray<View> views;
 
     private Context mContext;
-    private ImageLoadHelper imageHelper;
+    private ImageLoader imageLoader;
     private OnImageSingleClick onImageSingleClick;
     private OnImageLongClick onImageLongClick;
 
-    public ViewpagerAdapter(Context context, ImageLoadHelper imageHelper, List<String> paths) {
+    public ViewpagerAdapter(Context context, ImageLoader imageLoader, List<String> paths) {
         this.mContext = context;
-        this.imageHelper = imageHelper;
+        this.imageLoader = imageLoader;
         this.paths = paths;
 
         views = new SparseArray<>(paths.size());
@@ -74,7 +75,7 @@ public class ViewpagerAdapter extends PagerAdapter {
         final PhotoView photoView = (PhotoView) view.findViewById(R.id.dialog_image);
 
         views.put(position, view);
-        imageHelper.showImage(position, paths.get(position), photoView);
+        imageLoader.showImage(position, paths.get(position), photoView, onLoadListener);
 
         if (onImageSingleClick != null) {
             photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
@@ -103,17 +104,28 @@ public class ViewpagerAdapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
-    public void showProgress(int position) {
-        View view = views.get(position);
-        RelativeLayout progressBarLayout = (RelativeLayout) view.findViewById(R.id.progressBar_layout);
-        progressBarLayout.setVisibility(View.VISIBLE);
-    }
+    OnLoadListener onLoadListener = new OnLoadListener() {
+        @Override
+        public void onStart(int position) {
+            View view = views.get(position);
+            RelativeLayout progressBarLayout = (RelativeLayout) view.findViewById(R.id.progressBar_layout);
+            progressBarLayout.setVisibility(View.VISIBLE);
+        }
 
-    public void hideProgress(int position) {
-        View view = views.get(position);
-        RelativeLayout progressBarLayout = (RelativeLayout) view.findViewById(R.id.progressBar_layout);
-        progressBarLayout.setVisibility(View.GONE);
-    }
+        @Override
+        public void onError(int position) {
+            View view = views.get(position);
+            RelativeLayout progressBarLayout = (RelativeLayout) view.findViewById(R.id.progressBar_layout);
+            progressBarLayout.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onSuccess(int position) {
+            View view = views.get(position);
+            RelativeLayout progressBarLayout = (RelativeLayout) view.findViewById(R.id.progressBar_layout);
+            progressBarLayout.setVisibility(View.GONE);
+        }
+    };
 
     public void setOnImageSingleClick(OnImageSingleClick onImageSingleClick) {
         this.onImageSingleClick = onImageSingleClick;

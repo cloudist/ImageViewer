@@ -15,7 +15,8 @@ import java.util.List;
 
 import cn.imageviewer.R;
 import cn.imageviewer.adapter.ViewpagerAdapter;
-import cn.imageviewer.helper.ImageLoadHelper;
+import cn.imageviewer.helper.ImageLoader;
+import cn.imageviewer.helper.ImageTramsform;
 import cn.imageviewer.helper.OnImageLongClick;
 import cn.imageviewer.helper.OnImageSingleClick;
 
@@ -30,7 +31,7 @@ public class ImageViewer extends DialogFragment {
 
     int index = 0;
     List<String> paths = new ArrayList<>();
-    ImageLoadHelper imageLoadHelper;
+    ImageLoader imageLoader;
     private OnImageSingleClick onImageSingleClick;
     private OnImageLongClick onImageLongClick;
 
@@ -74,7 +75,7 @@ public class ImageViewer extends DialogFragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        adapter = new ViewpagerAdapter(getActivity(), imageLoadHelper, paths);
+        adapter = new ViewpagerAdapter(getActivity(), imageLoader, paths);
         adapter.setOnImageLongClick(onImageLongClick);
         adapter.setOnImageSingleClick(onImageSingleClick);
         viewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.imgeviewer_margin));
@@ -83,22 +84,16 @@ public class ImageViewer extends DialogFragment {
         viewPager.setCurrentItem(index);
     }
 
-    public <T> ImageViewer setPaths(List<T> objects, ImageLoadHelper<T> imageLoadHelper) {
-        this.imageLoadHelper = imageLoadHelper;
-        if (objects != null) {
-            for (T t : objects) {
-                paths.add(imageLoadHelper.tramsformPaths(t));
-            }
+    public <T> ImageViewer setPaths(List<T> objects, ImageTramsform<T> imageTramsform) {
+        for (T t : objects) {
+            paths.add(imageTramsform.tramsformPaths(t));
         }
         return ImageViewer.this;
     }
 
-    public void showProgress(int position) {
-        adapter.showProgress(position);
-    }
-
-    public void hideProgress(int position) {
-        adapter.hideProgress(position);
+    public ImageViewer setImageLoader(ImageLoader imageLoader) {
+        this.imageLoader = imageLoader;
+        return ImageViewer.this;
     }
 
     public ImageViewer setIndex(int index) {
