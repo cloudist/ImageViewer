@@ -49,7 +49,7 @@ Step 2. Add the dependency
             .setImageLoader(new ImageLoader() {
                 @Override
                 public void showImage(final int position, String path, PhotoView photoView, final OnLoadListener onLoadListener) {
-                    //显示progress
+                    // show progress
                     onLoadListener.onStart(position);
                     Glide.with(OCApplication.getContext())
                             .load(path)
@@ -57,14 +57,14 @@ Step 2. Add the dependency
                             .listener(new RequestListener<String, GlideDrawable>() {
                                 @Override
                                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                    //隐藏progress
+                                    // hide progress
                                     onLoadListener.onError(position);
                                     return false;
                                 }
 
                                 @Override
                                 public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                    //隐藏progress
+                                    // hide progress
                                     onLoadListener.onSuccess(position);
                                     return false;
                                 }
