@@ -2,7 +2,7 @@
 
 ## Screenshot
 
-![](gif/display.gif)
+![](gif/display-1.0.3.gif)
 
 ## Usage
 
