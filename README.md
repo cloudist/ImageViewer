@@ -18,7 +18,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-	        compile 'com.github.Cloudist:ImageViewer:1.0.0'
+	        compile 'com.github.Cloudist:ImageViewer:1.0.1'
 	}
 
 ## Sample Code
@@ -27,49 +27,102 @@ Step 2. Add the dependency
     List<String> paths = new ArrayList();
     ImageViewer.newInstance()
             .setIndex(0)
-            .setOnImageSingleClick(new OnImageSingleClick() {
+            .setOnImageSingleClickListener(new OnImageSingleClickListener() {
                 @Override
                 public void onImageSingleClick(int position, String path, PhotoView photoView) {
-                    Toast.makeText(MainActivity.this, "onSingleClick" + position, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "onImageSingleClickListener" + position, Toast.LENGTH_SHORT).show();
                 }
             })
-            .setOnImageLongClick(new OnImageLongClick() {
+            .setOnImageLongClickListener(new OnImageLongClickListener() {
                 @Override
                 public boolean onImageLongClick(int position, String path, PhotoView photoView) {
-                    Toast.makeText(MainActivity.this, "onLongClick" + position, Toast.LENGTH_SHORT).show();
-                    return true;
+                    Toast.makeText(MainActivity.this, "onImageLongClickListener" + position, Toast.LENGTH_SHORT).show();
+                    return false;
                 }
             })
-            .setPaths(paths, new ImageTramsform<String>() {
-                @Override
-                public String tramsformPaths(String path) {
-                    return path;
-                }
-            })
+            .setPaths(paths)
+            .setAdapter(new ViewpagerCommonAdapter(MainActivity.this))
             .setImageLoader(new ImageLoader() {
                 @Override
-                public void showImage(final int position, String path, PhotoView photoView, final OnLoadListener onLoadListener) {
-                    // show progress
-                    onLoadListener.onStart(position);
+                public void showImage(final int position, String path, ImageView imageView) {
+                    final OnLoadListener loadListener = this.getOnLoadListener();
+                    final View view = this.getView();
+
+                    loadListener.onStart(position);
                     Glide.with(OCApplication.getContext())
                             .load(path)
-                            .placeholder(R.mipmap.ic_launcher)
                             .listener(new RequestListener<String, GlideDrawable>() {
                                 @Override
                                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                    // hide progress
-                                    onLoadListener.onError(position);
+                                    loadListener.onError(position);
                                     return false;
                                 }
 
                                 @Override
                                 public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                    // hide progress
-                                    onLoadListener.onSuccess(position);
+                                    loadListener.onSuccess(position);
                                     return false;
                                 }
                             })
-                            .into(photoView);
+                            .into(imageView);
+                }
+            })
+            .show(getSupportFragmentManager(), "ImageViewer");
+```
+
+## Customized Adapter
+
+```Java
+    public class CustomViewpagerAdapter extends ViewpagerAdapter {
+
+        public CustomViewpagerAdapter(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected View initView(ViewGroup container, final int position) {
+            //new ImageView并设置全屏和图片资源
+            View view = LayoutInflater.from(mContext).inflate(R.layout.demo_photoview, container, false);
+            final ImageView imageView = (ImageView) view.findViewById(R.id.image_demo);
+
+            //自定义adapter可以在内部直接设置点击事件 可以避免builder过于复杂
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, "demoOnPhotoTap" + position, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Toast.makeText(mContext, "demoOnLongClick" + position, Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
+
+            imageLoader.setView(view);
+            imageLoader.showImage(position, paths.get(position), imageView);
+            return view;
+        }
+
+    }
+
+```
+
+## Customized ImageViewer init
+
+```Java
+    ImageViewer.newInstance()
+            .setIndex(0)
+            .setPaths(paths)
+            .setAdapter(new CustomViewpagerAdapter(MainActivity.this))
+            .setImageLoader(new ImageLoader() {
+                @Override
+                public void showImage(int position, String path, ImageView imageView) {
+                    Glide.with(OCApplication.getContext())
+                            .load(path)
+                            .into(imageView);
                 }
             })
             .show(getSupportFragmentManager(), "ImageViewer");
