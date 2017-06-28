@@ -15,10 +15,10 @@ import java.util.List;
 
 import cn.imageviewer.R;
 import cn.imageviewer.adapter.ViewpagerAdapter;
-import cn.imageviewer.helper.ImageLoader;
 import cn.imageviewer.helper.ImageTramsform;
-import cn.imageviewer.helper.OnImageLongClick;
-import cn.imageviewer.helper.OnImageSingleClick;
+import cn.imageviewer.helper.OnImageLongClickListener;
+import cn.imageviewer.helper.OnImageSingleClickListener;
+import cn.imageviewer.helper.ImageLoader;
 
 /**
  * Created by cloudist on 2017/5/31.
@@ -32,8 +32,8 @@ public class ImageViewer extends DialogFragment {
     int index = 0;
     List<String> paths = new ArrayList<>();
     ImageLoader imageLoader;
-    private OnImageSingleClick onImageSingleClick;
-    private OnImageLongClick onImageLongClick;
+    private OnImageSingleClickListener onImageSingleClickListener;
+    private OnImageLongClickListener onImageLongClickListener;
 
     public static ImageViewer newInstance() {
         Bundle args = new Bundle();
@@ -53,7 +53,7 @@ public class ImageViewer extends DialogFragment {
                              Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         //设置入出场动画
-        View rootView = inflater.inflate(R.layout.dialog_switch_image, container);
+        View rootView = inflater.inflate(R.layout.fixed_viewpager, container);
         return rootView;
     }
 
@@ -75,13 +75,19 @@ public class ImageViewer extends DialogFragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        adapter = new ViewpagerAdapter(getActivity(), imageLoader, paths);
-        adapter.setOnImageLongClick(onImageLongClick);
-        adapter.setOnImageSingleClick(onImageSingleClick);
+        adapter.setImageLoader(imageLoader);
+        adapter.setPaths(paths);
+        adapter.setOnImageLongClickListener(onImageLongClickListener);
+        adapter.setOnImageSingleClickListener(onImageSingleClickListener);
         viewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.imgeviewer_margin));
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(index);
+    }
+
+    public ImageViewer setPaths(List<String> paths) {
+        this.paths = paths;
+        return ImageViewer.this;
     }
 
     public <T> ImageViewer setPaths(List<T> objects, ImageTramsform<T> imageTramsform) {
@@ -101,13 +107,19 @@ public class ImageViewer extends DialogFragment {
         return ImageViewer.this;
     }
 
-    public ImageViewer setOnImageSingleClick(OnImageSingleClick onImageSingleClick) {
-        this.onImageSingleClick = onImageSingleClick;
+    public ImageViewer setAdapter(ViewpagerAdapter adapter) {
+        this.adapter = adapter;
         return ImageViewer.this;
     }
 
-    public ImageViewer setOnImageLongClick(OnImageLongClick onImageLongClick) {
-        this.onImageLongClick = onImageLongClick;
+    public ImageViewer setOnImageSingleClickListener(OnImageSingleClickListener onImageSingleClickListener) {
+        this.onImageSingleClickListener = onImageSingleClickListener;
         return ImageViewer.this;
     }
+
+    public ImageViewer setOnImageLongClickListener(OnImageLongClickListener onImageLongClickListener) {
+        this.onImageLongClickListener = onImageLongClickListener;
+        return ImageViewer.this;
+    }
+
 }
