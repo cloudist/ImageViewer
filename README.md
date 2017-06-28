@@ -81,7 +81,6 @@ Step 2. Add the dependency
 
         @Override
         protected View initView(ViewGroup container, final int position) {
-            //new ImageView并设置全屏和图片资源
             View view = LayoutInflater.from(mContext).inflate(R.layout.demo_photoview, container, false);
             final ImageView imageView = (ImageView) view.findViewById(R.id.image_demo);
 
