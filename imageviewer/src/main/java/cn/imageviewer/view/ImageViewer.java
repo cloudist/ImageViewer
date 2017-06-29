@@ -32,8 +32,6 @@ public class ImageViewer extends DialogFragment {
     int index = 0;
     List<String> paths = new ArrayList<>();
     ImageLoader imageLoader;
-    private OnImageSingleClickListener onImageSingleClickListener;
-    private OnImageLongClickListener onImageLongClickListener;
 
     public static ImageViewer newInstance() {
         Bundle args = new Bundle();
@@ -77,8 +75,6 @@ public class ImageViewer extends DialogFragment {
     private void setupViewPager(ViewPager viewPager) {
         adapter.setImageLoader(imageLoader);
         adapter.setPaths(paths);
-        adapter.setOnImageLongClickListener(onImageLongClickListener);
-        adapter.setOnImageSingleClickListener(onImageSingleClickListener);
         viewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.imgeviewer_margin));
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(adapter);
@@ -109,16 +105,6 @@ public class ImageViewer extends DialogFragment {
 
     public ImageViewer setAdapter(ViewpagerAdapter adapter) {
         this.adapter = adapter;
-        return ImageViewer.this;
-    }
-
-    public ImageViewer setOnImageSingleClickListener(OnImageSingleClickListener onImageSingleClickListener) {
-        this.onImageSingleClickListener = onImageSingleClickListener;
-        return ImageViewer.this;
-    }
-
-    public ImageViewer setOnImageLongClickListener(OnImageLongClickListener onImageLongClickListener) {
-        this.onImageLongClickListener = onImageLongClickListener;
         return ImageViewer.this;
     }
 

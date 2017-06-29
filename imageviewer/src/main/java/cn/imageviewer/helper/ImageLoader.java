@@ -3,8 +3,6 @@ package cn.imageviewer.helper;
 import android.view.View;
 import android.widget.ImageView;
 
-import cn.imageviewer.helper.OnLoadListener;
-
 /**
  * Created by cloudist on 2017/6/28.
  */

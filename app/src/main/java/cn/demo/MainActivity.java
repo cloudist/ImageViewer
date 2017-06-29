@@ -65,26 +65,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final ViewpagerCommonAdapter viewpagerCommonAdapter = new ViewpagerCommonAdapter(MainActivity.this);
+
+        viewpagerCommonAdapter.setOnImageSingleClickListener(new OnImageSingleClickListener() {
+            @Override
+            public void onImageSingleClick(int position, String path, PhotoView photoView) {
+                Toast.makeText(MainActivity.this, "onImageSingleClick" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewpagerCommonAdapter.setOnImageLongClickListener(new OnImageLongClickListener() {
+            @Override
+            public boolean onImageLongClick(int position, String path, PhotoView photoView) {
+                Toast.makeText(MainActivity.this, "onImageLongClick" + position, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ImageViewer.newInstance()
                         .setIndex(0)
-                        .setOnImageSingleClickListener(new OnImageSingleClickListener() {
-                            @Override
-                            public void onImageSingleClick(int position, String path, PhotoView photoView) {
-                                Toast.makeText(MainActivity.this, "onImageSingleClickListener" + position, Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setOnImageLongClickListener(new OnImageLongClickListener() {
-                            @Override
-                            public boolean onImageLongClick(int position, String path, PhotoView photoView) {
-                                Toast.makeText(MainActivity.this, "onImageLongClickListener" + position, Toast.LENGTH_SHORT).show();
-                                return false;
-                            }
-                        })
                         .setPaths(paths)
-                        .setAdapter(new ViewpagerCommonAdapter(MainActivity.this))
+                        .setAdapter(viewpagerCommonAdapter)
                         .setImageLoader(new ImageLoader() {
                             @Override
                             public void showImage(final int position, String path, ImageView imageView) {
