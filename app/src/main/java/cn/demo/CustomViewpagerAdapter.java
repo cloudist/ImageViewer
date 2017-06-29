@@ -46,5 +46,4 @@ public class CustomViewpagerAdapter extends ViewpagerAdapter {
         imageLoader.showImage(position, path, imageView);
     }
 
-
 }

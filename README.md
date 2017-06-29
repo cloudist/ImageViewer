@@ -24,24 +24,27 @@ Step 2. Add the dependency
 ## Sample Code
 
 ```Java
-    List<String> paths = new ArrayList();
-    ImageViewer.newInstance()
+    final ViewpagerCommonAdapter viewpagerCommonAdapter = new ViewpagerCommonAdapter(MainActivity.this);
+
+        viewpagerCommonAdapter.setOnImageSingleClickListener(new OnImageSingleClickListener() {
+            @Override
+            public void onImageSingleClick(int position, String path, PhotoView photoView) {
+                Toast.makeText(MainActivity.this, "onImageSingleClick" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewpagerCommonAdapter.setOnImageLongClickListener(new OnImageLongClickListener() {
+            @Override
+            public boolean onImageLongClick(int position, String path, PhotoView photoView) {
+                Toast.makeText(MainActivity.this, "onImageLongClick" + position, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
+
+        ImageViewer.newInstance()
             .setIndex(0)
-            .setOnImageSingleClickListener(new OnImageSingleClickListener() {
-                @Override
-                public void onImageSingleClick(int position, String path, PhotoView photoView) {
-                    Toast.makeText(MainActivity.this, "onImageSingleClickListener" + position, Toast.LENGTH_SHORT).show();
-                }
-            })
-            .setOnImageLongClickListener(new OnImageLongClickListener() {
-                @Override
-                public boolean onImageLongClick(int position, String path, PhotoView photoView) {
-                    Toast.makeText(MainActivity.this, "onImageLongClickListener" + position, Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            })
             .setPaths(paths)
-            .setAdapter(new ViewpagerCommonAdapter(MainActivity.this))
+            .setAdapter(viewpagerCommonAdapter)
             .setImageLoader(new ImageLoader() {
                 @Override
                 public void showImage(final int position, String path, ImageView imageView) {
@@ -80,11 +83,14 @@ Step 2. Add the dependency
         }
 
         @Override
-        protected View initView(ViewGroup container, final int position) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.demo_photoview, container, false);
-            final ImageView imageView = (ImageView) view.findViewById(R.id.image_demo);
+        protected View initView(ViewGroup container, int position) {
+            return LayoutInflater.from(mContext).inflate(R.layout.demo_photoview, container, false);
+        }
 
-            //自定义adapter可以在内部直接设置点击事件 可以避免builder过于复杂
+        @Override
+        protected void loadImage(final int position, String path, View view) {
+            final ImageView imageView = (ImageView) view.findViewById(R.id.image_demo);
+            //自定义adapter可以在内部直接设置点击事件
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -100,29 +106,26 @@ Step 2. Add the dependency
                 }
             });
 
-            imageLoader.setView(view);
-            imageLoader.showImage(position, paths.get(position), imageView);
-            return view;
+            imageLoader.showImage(position, path, imageView);
         }
 
     }
-
 ```
 
 ## Customized ImageViewer init
 
 ```Java
     ImageViewer.newInstance()
-            .setIndex(0)
-            .setPaths(paths)
-            .setAdapter(new CustomViewpagerAdapter(MainActivity.this))
-            .setImageLoader(new ImageLoader() {
-                @Override
-                public void showImage(int position, String path, ImageView imageView) {
-                    Glide.with(OCApplication.getContext())
-                            .load(path)
-                            .into(imageView);
-                }
-            })
-            .show(getSupportFragmentManager(), "ImageViewer");
+        .setIndex(0)
+        .setPaths(paths)
+        .setAdapter(new CustomViewpagerAdapter(MainActivity.this))
+        .setImageLoader(new ImageLoader() {
+            @Override
+            public void showImage(int position, String path, ImageView imageView) {
+                Glide.with(OCApplication.getContext())
+                        .load(path)
+                        .into(imageView);
+            }
+        })
+        .show(getSupportFragmentManager(), "ImageViewer");
 ```
