@@ -20,11 +20,13 @@ public class CustomViewpagerAdapter extends ViewpagerAdapter {
     }
 
     @Override
-    protected View initView(ViewGroup container, final int position) {
-        //new ImageView并设置全屏和图片资源
-        View view = LayoutInflater.from(mContext).inflate(R.layout.demo_photoview, container, false);
-        final ImageView imageView = (ImageView) view.findViewById(R.id.image_demo);
+    protected View initView(ViewGroup container, int position) {
+        return LayoutInflater.from(mContext).inflate(R.layout.demo_photoview, container, false);
+    }
 
+    @Override
+    protected void loadImage(final int position, String path, View view) {
+        final ImageView imageView = (ImageView) view.findViewById(R.id.image_demo);
         //自定义adapter可以在内部直接设置点击事件
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,9 +43,8 @@ public class CustomViewpagerAdapter extends ViewpagerAdapter {
             }
         });
 
-        imageLoader.setView(view);
-        imageLoader.showImage(position, paths.get(position), imageView);
-        return view;
+        imageLoader.showImage(position, path, imageView);
     }
+
 
 }

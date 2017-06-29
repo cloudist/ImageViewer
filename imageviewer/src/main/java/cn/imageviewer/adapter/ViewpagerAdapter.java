@@ -49,6 +49,10 @@ public abstract class ViewpagerAdapter extends PagerAdapter {
         View view = initView(container, position);
 
         container.addView(view);
+        views.put(position, view);
+        imageLoader.setView(view);
+
+        loadImage(position, paths.get(position), view);
 
         return view;
     }
@@ -76,5 +80,7 @@ public abstract class ViewpagerAdapter extends PagerAdapter {
     }
 
     protected abstract View initView(ViewGroup container, final int position);
+
+    protected abstract void loadImage(int position, String path, View view);
 
 }

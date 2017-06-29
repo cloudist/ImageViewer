@@ -23,8 +23,16 @@ public class ViewpagerCommonAdapter extends ViewpagerAdapter {
 
     @Override
     protected View initView(ViewGroup container, final int position) {
-        //new ImageView并设置全屏和图片资源
         View view = LayoutInflater.from(mContext).inflate(R.layout.switch_photoview, container, false);
+
+        //可以根据自己的需求重写onLoadListener 并在此处设置
+        imageLoader.setOnLoadListener(onLoadListener);
+
+        return view;
+    }
+
+    @Override
+    protected void loadImage(final int position, String path, View view) {
         final PhotoView photoView = (PhotoView) view.findViewById(R.id.dialog_image);
 
         if (onImageSingleClickListener != null) {
@@ -45,15 +53,8 @@ public class ViewpagerCommonAdapter extends ViewpagerAdapter {
             });
         }
 
-        views.put(position, view);
-
-        imageLoader.setView(view);
-        imageLoader.setOnLoadListener(onLoadListener);
-        imageLoader.showImage(position, paths.get(position), photoView);
-
-        return view;
+        imageLoader.showImage(position, path, photoView);
     }
-
 
     private void showProgressBar(int position, int visible) {
         View view = views.get(position);
