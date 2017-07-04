@@ -1,5 +1,6 @@
 package cn.imageviewer.view;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +18,6 @@ import java.util.List;
 import cn.imageviewer.R;
 import cn.imageviewer.adapter.ViewpagerAdapter;
 import cn.imageviewer.helper.ImageTramsform;
-import cn.imageviewer.helper.OnImageLongClickListener;
-import cn.imageviewer.helper.OnImageSingleClickListener;
 import cn.imageviewer.helper.ImageLoader;
 
 /**
@@ -69,6 +69,7 @@ public class ImageViewer extends DialogFragment {
         window.setBackgroundDrawableResource(R.color.image_viewer_black_deep);
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         window.setGravity(Gravity.CENTER);
+        hideStatusNavigationBar(window);
         super.onResume();
     }
 
@@ -79,6 +80,19 @@ public class ImageViewer extends DialogFragment {
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(index);
+    }
+
+    private void hideStatusNavigationBar(Window window) {
+        if (Build.VERSION.SDK_INT < 16) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            int uiFlags = View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN;//hide statusBar
+            window.getDecorView().setSystemUiVisibility(uiFlags);
+
+        }
     }
 
     public ImageViewer setPaths(List<String> paths) {
