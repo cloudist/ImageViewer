@@ -19,6 +19,10 @@ import cn.imageviewer.R;
 import cn.imageviewer.adapter.ViewpagerAdapter;
 import cn.imageviewer.helper.ImageTramsform;
 import cn.imageviewer.helper.ImageLoader;
+import cn.imageviewer.tranformer.CubeOutTransformer;
+import cn.imageviewer.tranformer.DefaultTransformer;
+import cn.imageviewer.tranformer.DepthPageTransformer;
+import cn.imageviewer.tranformer.ZoomOutTranformer;
 
 /**
  * Created by cloudist on 2017/5/31.
@@ -26,10 +30,17 @@ import cn.imageviewer.helper.ImageLoader;
 
 public class ImageViewer extends DialogFragment {
 
+    public static final int TYPE_DEFAULT_TRANSFORMER = 1011;
+    public static final int TYPE_CUBEOUT_TRANSFORMER = 1012;
+    public static final int TYPE_DEPTHPAGE_TRANSFORMER = 1013;
+    public static final int TYPE_ZOOMOUT_TRANSFORMER = 1014;
+
+
     FixedViewPager viewpager;
     ViewpagerAdapter adapter;
 
     int index = 0;
+    int transformerType = TYPE_DEFAULT_TRANSFORMER;
     List<String> paths = new ArrayList<>();
     ImageLoader imageLoader;
 
@@ -80,6 +91,20 @@ public class ImageViewer extends DialogFragment {
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(index);
+        switch (transformerType){
+            case TYPE_CUBEOUT_TRANSFORMER:
+                viewPager.setPageTransformer(true, new CubeOutTransformer());
+                break;
+            case TYPE_DEFAULT_TRANSFORMER:
+                viewPager.setPageTransformer(true, new DefaultTransformer());
+                break;
+            case TYPE_DEPTHPAGE_TRANSFORMER:
+                viewPager.setPageTransformer(true, new DepthPageTransformer());
+                break;
+            case TYPE_ZOOMOUT_TRANSFORMER:
+                viewPager.setPageTransformer(true, new ZoomOutTranformer());
+                break;
+        }
     }
 
     private void hideStatusNavigationBar(Window window) {
@@ -122,4 +147,8 @@ public class ImageViewer extends DialogFragment {
         return ImageViewer.this;
     }
 
+    public ImageViewer setTransformerType(int transformerType) {
+        this.transformerType = transformerType;
+        return ImageViewer.this;
+    }
 }
