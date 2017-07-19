@@ -2,7 +2,7 @@
 
 ## Screenshot
 
-![](gif/display-1.0.3.gif)
+![](gif/display-1.0.4.gif)
 
 ## Usage
 
@@ -18,7 +18,7 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-	        compile 'com.github.sychaos:FilePicker:1.0.0'
+	        compile 'com.github.Cloudist:ImageViewer:1.0.4'
 	}
 
 ## Sample Code
@@ -44,6 +44,8 @@ viewpagerCommonAdapter.setOnImageLongClickListener(new OnImageLongClickListener(
 ImageViewer.newInstance()
     .setIndex(0)
     .setPaths(paths)
+    //setTransformerType 可以设置ImageViewer切换图片时的动画
+    .setTransformerType(ImageViewer.TYPE_ZOOMOUT_TRANSFORMER)
     .setAdapter(viewpagerCommonAdapter)
     .setImageLoader(new ImageLoader() {
 	@Override
@@ -118,6 +120,7 @@ public class CustomViewpagerAdapter extends ViewpagerAdapter {
 ImageViewer.newInstance()
 	.setIndex(0)
 	.setPaths(paths)
+	.setTransformerType(ImageViewer.TYPE_DEPTHPAGE_TRANSFORMER)
 	.setAdapter(new CustomViewpagerAdapter(MainActivity.this))
 	.setImageLoader(new ImageLoader() {
 	    @Override
