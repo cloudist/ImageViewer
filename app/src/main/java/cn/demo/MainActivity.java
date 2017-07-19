@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ImageViewer.newInstance()
-                        .setIndex(0)
+                        .setIndex(3)
                         .setPaths(paths)
                         .setTransformerType(ImageViewer.TYPE_ZOOMOUT_TRANSFORMER)
                         .setAdapter(new CustomViewpagerAdapter(MainActivity.this))
@@ -69,15 +69,15 @@ public class MainActivity extends AppCompatActivity {
         final ViewpagerCommonAdapter viewpagerCommonAdapter = new ViewpagerCommonAdapter(MainActivity.this);
 
         final ImageViewer imageViewer = ImageViewer.newInstance()
-                .setIndex(0)
+                .setIndex(2)
                 .setPaths(paths)
+                .setTransformerType(ImageViewer.TYPE_DEPTHPAGE_TRANSFORMER)
                 .setAdapter(viewpagerCommonAdapter)
                 .setImageLoader(new ImageLoader() {
                     @Override
                     public void showImage(final int position, String path, ImageView imageView) {
                         final OnLoadListener loadListener = this.getOnLoadListener();
                         final View view = this.getView();
-
                         loadListener.onStart(position);
                         Glide.with(OCApplication.getContext())
                                 .load(path)

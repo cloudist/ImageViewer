@@ -71,6 +71,9 @@ public abstract class ViewpagerAdapter extends PagerAdapter {
     }
 
     public void setPaths(List<String> paths) {
+        if (paths == null) {
+            paths = new ArrayList<>();
+        }
         this.paths = paths;
         views = new SparseArray<>(paths.size());
     }

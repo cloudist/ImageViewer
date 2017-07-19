@@ -82,6 +82,9 @@ public class ImageViewer extends DialogFragment {
         window.setGravity(Gravity.CENTER);
         hideStatusNavigationBar(window);
         super.onResume();
+
+        //如果在onViewCreated 设置会出现设置无效的状况
+        viewpager.setCurrentItem(index);
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -90,8 +93,7 @@ public class ImageViewer extends DialogFragment {
         viewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.imgeviewer_margin));
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(index);
-        switch (transformerType){
+        switch (transformerType) {
             case TYPE_CUBEOUT_TRANSFORMER:
                 viewPager.setPageTransformer(true, new CubeOutTransformer());
                 break;
