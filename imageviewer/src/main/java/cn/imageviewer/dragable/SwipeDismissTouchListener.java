@@ -184,7 +184,7 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
                 float deltaX = motionEvent.getRawX() - mDownX;
                 float deltaY = motionEvent.getRawY() - mDownY;
                 //如果x轴移动距离大于 离开控件的距离 并且Y轴移动小于x轴二分之一
-                if (deltaY > mSlop) {
+                if (Math.abs(deltaX) < mSlop && deltaY > mSlop) {
                     mSwiping = true;
                     mView.getParent().requestDisallowInterceptTouchEvent(true);
 
@@ -242,7 +242,7 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
             }
         });
 
-        //在动画进行时对view进行更新
+        //防止View的动画导致的长度变化 并不确定
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {

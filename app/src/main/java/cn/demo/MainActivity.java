@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         paths = new ArrayList<>();
         paths.add("http://i2.sinaimg.cn/travel/2015/0715/U10172P704DT20150715110013.png");
         paths.add("http://img02.tooopen.com/images/20150628/tooopen_sy_132149827682.jpg");
-        paths.add("http://img02.tooopen.com/images/20160330/tooopen_sy_157749743148.jpg");
         paths.add("http://pic.qiantucdn.com/58pic/17/99/58/34R58PICpKy_1024.jpg");
         paths.add("http://tupian.enterdesk.com/2013/mxy/12/07/3/4.jpg");
         paths.add("http://pic.58pic.com/58pic/13/40/15/62958PICTq7_1024.jpg");
