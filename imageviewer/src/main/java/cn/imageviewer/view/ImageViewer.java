@@ -17,6 +17,8 @@ import java.util.List;
 
 import cn.imageviewer.R;
 import cn.imageviewer.adapter.ViewpagerAdapter;
+import cn.imageviewer.dragable.SwipeDismissTouchListener;
+import cn.imageviewer.dragable.SwipeableFrameLayout;
 import cn.imageviewer.helper.ImageTramsform;
 import cn.imageviewer.helper.ImageLoader;
 import cn.imageviewer.tranformer.CubeOutTransformer;
@@ -35,7 +37,9 @@ public class ImageViewer extends DialogFragment {
     public static final int TYPE_DEPTHPAGE_TRANSFORMER = 1013;
     public static final int TYPE_ZOOMOUT_TRANSFORMER = 1014;
 
+    Window window;
 
+    SwipeableFrameLayout layout;
     FixedViewPager viewpager;
     ViewpagerAdapter adapter;
 
@@ -71,18 +75,35 @@ public class ImageViewer extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         viewpager = (FixedViewPager) view.findViewById(R.id.viewpager);
+        layout = (SwipeableFrameLayout) view.findViewById(R.id.layout);
+
+        layout.setSwipeDismissTouchListener(new SwipeDismissTouchListener(new SwipeDismissTouchListener.DismissCallbacks() {
+
+            @Override
+            public void onDismiss(View view) {
+                dismiss();
+            }
+
+            @Override
+            public void onSwiping(float degree) {
+                WindowManager.LayoutParams windowParams = window.getAttributes();
+                windowParams.dimAmount = 0.8f * degree;
+                window.setAttributes(windowParams);
+            }
+        }));
 
         setupViewPager(viewpager);
     }
 
     public void onResume() {
-        Window window = getDialog().getWindow();
-        window.setBackgroundDrawableResource(R.color.image_viewer_black_deep);
+        window = getDialog().getWindow();
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        window.setBackgroundDrawableResource(R.color.image_viewer_transparent);
         window.setGravity(Gravity.CENTER);
-        hideStatusNavigationBar(window);
+        WindowManager.LayoutParams windowParams = window.getAttributes();
+        windowParams.dimAmount = 0.8f;
+        window.setAttributes(windowParams);
         super.onResume();
-
         //如果在onViewCreated 设置会出现设置无效的状况
         viewpager.setCurrentItem(index);
     }
@@ -106,19 +127,6 @@ public class ImageViewer extends DialogFragment {
             case TYPE_ZOOMOUT_TRANSFORMER:
                 viewPager.setPageTransformer(true, new ZoomOutTranformer());
                 break;
-        }
-    }
-
-    private void hideStatusNavigationBar(Window window) {
-        if (Build.VERSION.SDK_INT < 16) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else {
-            int uiFlags = View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN;//hide statusBar
-            window.getDecorView().setSystemUiVisibility(uiFlags);
-
         }
     }
 

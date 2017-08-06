@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         final ImageViewer imageViewer = ImageViewer.newInstance()
                 .setIndex(2)
                 .setPaths(paths)
-                .setTransformerType(ImageViewer.TYPE_DEPTHPAGE_TRANSFORMER)
+                .setTransformerType(ImageViewer.TYPE_CUBEOUT_TRANSFORMER)
                 .setAdapter(viewpagerCommonAdapter)
                 .setImageLoader(new ImageLoader() {
                     @Override
