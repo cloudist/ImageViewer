@@ -184,7 +184,7 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
                 float deltaX = motionEvent.getRawX() - mDownX;
                 float deltaY = motionEvent.getRawY() - mDownY;
                 //如果x轴移动距离大于 离开控件的距离 并且Y轴移动小于x轴二分之一
-                if (Math.abs(deltaX) < mSlop && deltaY > mSlop) {
+                if (deltaY > mSlop && deltaY / Math.abs(deltaX) > 1) {
                     mSwiping = true;
                     mView.getParent().requestDisallowInterceptTouchEvent(true);
 
