@@ -12,6 +12,7 @@ import java.util.List;
 import cn.imageviewer.helper.OnImageLongClickListener;
 import cn.imageviewer.helper.OnImageSingleClickListener;
 import cn.imageviewer.helper.ImageLoader;
+import cn.imageviewer.helper.OnLoadListener;
 
 /**
  * Created by cloudist on 2017/6/28.

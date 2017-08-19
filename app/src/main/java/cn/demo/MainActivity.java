@@ -48,31 +48,28 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageViewer.newInstance()
-                        .setIndex(3)
-                        .setPaths(paths)
-                        .setTransformerType(ImageViewer.TYPE_ZOOMOUT_TRANSFORMER)
-                        .setAdapter(new CustomViewpagerAdapter(MainActivity.this))
-                        .setImageLoader(new ImageLoader() {
+                new ImageViewer.Builder(
+                        new ImageLoader() {
                             @Override
                             public void showImage(int position, String path, ImageView imageView) {
                                 Glide.with(OCApplication.getContext())
                                         .load(path)
                                         .into(imageView);
                             }
-                        })
+                        },
+                        new CustomViewpagerAdapter(MainActivity.this))
+                        .setIndex(3)
+                        .setPaths(paths)
+                        .setTransformerType(ImageViewer.TYPE_ZOOMOUT_TRANSFORMER)
+                        .build()
                         .show(getSupportFragmentManager(), "ImageViewer");
             }
         });
 
         final ViewpagerCommonAdapter viewpagerCommonAdapter = new ViewpagerCommonAdapter(MainActivity.this);
 
-        final ImageViewer imageViewer = ImageViewer.newInstance()
-                .setIndex(2)
-                .setPaths(paths)
-                .setTransformerType(ImageViewer.TYPE_CUBEOUT_TRANSFORMER)
-                .setAdapter(viewpagerCommonAdapter)
-                .setImageLoader(new ImageLoader() {
+        final ImageViewer imageViewer = new ImageViewer.Builder(
+                new ImageLoader() {
                     @Override
                     public void showImage(final int position, String path, ImageView imageView) {
                         final OnLoadListener loadListener = this.getOnLoadListener();
@@ -95,7 +92,12 @@ public class MainActivity extends AppCompatActivity {
                                 })
                                 .into(imageView);
                     }
-                });
+                },
+                viewpagerCommonAdapter)
+                .setIndex(2)
+                .setPaths(paths)
+                .setTransformerType(ImageViewer.TYPE_CUBEOUT_TRANSFORMER)
+                .build();
 
         viewpagerCommonAdapter.setOnImageSingleClickListener(new OnImageSingleClickListener() {
             @Override

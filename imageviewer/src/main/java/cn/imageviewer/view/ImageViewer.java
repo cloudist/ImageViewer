@@ -1,9 +1,9 @@
 package cn.imageviewer.view;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -41,19 +41,12 @@ public class ImageViewer extends DialogFragment {
 
     SwipeableFrameLayout layout;
     FixedViewPager viewpager;
-    ViewpagerAdapter adapter;
 
     int index = 0;
     int transformerType = TYPE_DEFAULT_TRANSFORMER;
     List<String> paths = new ArrayList<>();
     ImageLoader imageLoader;
-
-    public static ImageViewer newInstance() {
-        Bundle args = new Bundle();
-        ImageViewer fragment = new ImageViewer();
-        fragment.setArguments(args);
-        return fragment;
-    }
+    ViewpagerAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,35 +123,41 @@ public class ImageViewer extends DialogFragment {
         }
     }
 
-    public ImageViewer setPaths(List<String> paths) {
-        this.paths = paths;
-        return ImageViewer.this;
-    }
+    public static class Builder {
+        int index = 0;
+        int transformerType = TYPE_DEFAULT_TRANSFORMER;
+        List<String> paths = new ArrayList<>();
+        ImageLoader imageLoader;
+        ViewpagerAdapter adapter;
 
-    public <T> ImageViewer setPaths(List<T> objects, ImageTramsform<T> imageTramsform) {
-        for (T t : objects) {
-            paths.add(imageTramsform.tramsformPaths(t));
+        public Builder(ImageLoader imageLoader, ViewpagerAdapter adapter) {
+            this.adapter = adapter;
+            this.imageLoader = imageLoader;
         }
-        return ImageViewer.this;
-    }
 
-    public ImageViewer setImageLoader(ImageLoader imageLoader) {
-        this.imageLoader = imageLoader;
-        return ImageViewer.this;
-    }
+        public Builder setIndex(int index) {
+            this.index = index;
+            return this;
+        }
 
-    public ImageViewer setIndex(int index) {
-        this.index = index;
-        return ImageViewer.this;
-    }
+        public Builder setTransformerType(int transformerType) {
+            this.transformerType = transformerType;
+            return this;
+        }
 
-    public ImageViewer setAdapter(ViewpagerAdapter adapter) {
-        this.adapter = adapter;
-        return ImageViewer.this;
-    }
+        public Builder setPaths(List<String> paths) {
+            this.paths = paths;
+            return this;
+        }
 
-    public ImageViewer setTransformerType(int transformerType) {
-        this.transformerType = transformerType;
-        return ImageViewer.this;
+        public ImageViewer build() {
+            ImageViewer imageViewer = new ImageViewer();
+            imageViewer.adapter = adapter;
+            imageViewer.imageLoader = imageLoader;
+            imageViewer.index = index;
+            imageViewer.transformerType = transformerType;
+            imageViewer.paths = paths;
+            return imageViewer;
+        }
     }
 }

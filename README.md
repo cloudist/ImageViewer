@@ -41,37 +41,36 @@ viewpagerCommonAdapter.setOnImageLongClickListener(new OnImageLongClickListener(
     }
 });
 
-ImageViewer.newInstance()
-    .setIndex(0)
+final ImageViewer imageViewer = new ImageViewer.Builder(
+    new ImageLoader() {
+        @Override
+        public void showImage(final int position, String path, ImageView imageView) {
+            final OnLoadListener loadListener = this.getOnLoadListener();
+            final View view = this.getView();
+            loadListener.onStart(position);
+            Glide.with(OCApplication.getContext())
+                    .load(path)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            loadListener.onError(position);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            loadListener.onSuccess(position);
+                            return false;
+                        }
+                    })
+                    .into(imageView);
+        }
+    },
+    viewpagerCommonAdapter)
+    .setIndex(2)
     .setPaths(paths)
-    //setTransformerType 可以设置ImageViewer切换图片时的动画
-    .setTransformerType(ImageViewer.TYPE_ZOOMOUT_TRANSFORMER)
-    .setAdapter(viewpagerCommonAdapter)
-    .setImageLoader(new ImageLoader() {
-	@Override
-	public void showImage(final int position, String path, ImageView imageView) {
-	    final OnLoadListener loadListener = this.getOnLoadListener();
-	    final View view = this.getView();
-
-	    loadListener.onStart(position);
-	    Glide.with(OCApplication.getContext())
-		    .load(path)
-		    .listener(new RequestListener<String, GlideDrawable>() {
-			@Override
-			public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-			    loadListener.onError(position);
-			    return false;
-			}
-
-			@Override
-			public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-			    loadListener.onSuccess(position);
-			    return false;
-			}
-		    })
-		    .into(imageView);
-	}
-    })
+    .setTransformerType(ImageViewer.TYPE_CUBEOUT_TRANSFORMER)
+    .build()
     .show(getSupportFragmentManager(), "ImageViewer");
 ```
 
@@ -117,18 +116,19 @@ public class CustomViewpagerAdapter extends ViewpagerAdapter {
 ## Customized ImageViewer init
 
 ```Java
-ImageViewer.newInstance()
-	.setIndex(0)
-	.setPaths(paths)
-	.setTransformerType(ImageViewer.TYPE_DEPTHPAGE_TRANSFORMER)
-	.setAdapter(new CustomViewpagerAdapter(MainActivity.this))
-	.setImageLoader(new ImageLoader() {
-	    @Override
-	    public void showImage(int position, String path, ImageView imageView) {
-		Glide.with(OCApplication.getContext())
-			.load(path)
-			.into(imageView);
-	    }
-	})
-	.show(getSupportFragmentManager(), "ImageViewer");
+new ImageViewer.Builder(
+        new ImageLoader() {
+            @Override
+            public void showImage(int position, String path, ImageView imageView) {
+                Glide.with(OCApplication.getContext())
+                        .load(path)
+                        .into(imageView);
+            }
+        },
+        new CustomViewpagerAdapter(MainActivity.this))
+        .setIndex(3)
+        .setPaths(paths)
+        .setTransformerType(ImageViewer.TYPE_ZOOMOUT_TRANSFORMER)
+        .build()
+        .show(getSupportFragmentManager(), "ImageViewer");
 ```
