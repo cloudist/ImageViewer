@@ -19,8 +19,8 @@ import cn.imageviewer.R;
 import cn.imageviewer.adapter.ViewpagerAdapter;
 import cn.imageviewer.dragable.SwipeDismissTouchListener;
 import cn.imageviewer.dragable.SwipeableFrameLayout;
-import cn.imageviewer.helper.ImageTramsform;
 import cn.imageviewer.helper.ImageLoader;
+import cn.imageviewer.helper.OnDismissCallback;
 import cn.imageviewer.tranformer.CubeOutTransformer;
 import cn.imageviewer.tranformer.DefaultTransformer;
 import cn.imageviewer.tranformer.DepthPageTransformer;
@@ -47,6 +47,7 @@ public class ImageViewer extends DialogFragment {
     List<String> paths = new ArrayList<>();
     ImageLoader imageLoader;
     ViewpagerAdapter adapter;
+    OnDismissCallback onDismissCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,15 @@ public class ImageViewer extends DialogFragment {
         viewpager.setCurrentItem(index);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (onDismissCallback != null) {
+            onDismissCallback.onDismiss(viewpager.getCurrentItem());
+        }
+    }
+
+
     private void setupViewPager(ViewPager viewPager) {
         adapter.setImageLoader(imageLoader);
         adapter.setPaths(paths);
@@ -128,6 +138,7 @@ public class ImageViewer extends DialogFragment {
         int transformerType = TYPE_DEFAULT_TRANSFORMER;
         List<String> paths = new ArrayList<>();
         ImageLoader imageLoader;
+        OnDismissCallback onDismissCallback;
         ViewpagerAdapter adapter;
 
         public Builder(ImageLoader imageLoader, ViewpagerAdapter adapter) {
@@ -150,6 +161,11 @@ public class ImageViewer extends DialogFragment {
             return this;
         }
 
+        public Builder setOnDismissCallback(OnDismissCallback onDismissCallback) {
+            this.onDismissCallback = onDismissCallback;
+            return this;
+        }
+
         public ImageViewer build() {
             ImageViewer imageViewer = new ImageViewer();
             imageViewer.adapter = adapter;
@@ -157,6 +173,7 @@ public class ImageViewer extends DialogFragment {
             imageViewer.index = index;
             imageViewer.transformerType = transformerType;
             imageViewer.paths = paths;
+            imageViewer.onDismissCallback = onDismissCallback;
             return imageViewer;
         }
     }
