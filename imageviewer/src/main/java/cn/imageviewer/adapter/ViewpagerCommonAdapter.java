@@ -56,6 +56,12 @@ public class ViewpagerCommonAdapter extends ViewpagerAdapter {
         imageLoader.showImage(position, path, photoView);
     }
 
+    @Override
+    protected void recycleImage(int position, String path, View view) {
+        final PhotoView photoView = (PhotoView) view.findViewById(R.id.dialog_image);
+        imageLoader.recycleImage(photoView);
+    }
+
     private void showProgressBar(int position, int visible) {
         View view = views.get(position);
         RelativeLayout progressBarLayout = (RelativeLayout) view.findViewById(R.id.progressBar_layout);

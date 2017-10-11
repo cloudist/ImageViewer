@@ -46,4 +46,10 @@ public class CustomViewpagerAdapter extends ViewpagerAdapter {
         imageLoader.showImage(position, path, imageView);
     }
 
+    @Override
+    protected void recycleImage(int position, String path, View view) {
+        final ImageView imageView = (ImageView) view.findViewById(R.id.image_demo);
+        imageLoader.recycleImage(imageView);
+    }
+
 }

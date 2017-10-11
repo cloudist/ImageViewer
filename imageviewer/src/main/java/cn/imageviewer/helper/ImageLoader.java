@@ -14,6 +14,10 @@ public abstract class ImageLoader {
 
     public abstract void showImage(int position, String path, ImageView imageView);
 
+    public void recycleImage(ImageView imageView) {
+        imageView.setImageDrawable(null);
+    }
+
     public OnLoadListener getOnLoadListener() {
         return onLoadListener;
     }
