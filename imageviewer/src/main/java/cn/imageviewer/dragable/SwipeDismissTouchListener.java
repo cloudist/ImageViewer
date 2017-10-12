@@ -113,18 +113,9 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
                 //mTiltEnabled设置是否旋转
                 if (dismiss) {
                     // dismiss
-                    mView.animate()
-                            .scaleX(mTiltEnabled ? 0f : 1.0f)
-                            .scaleY(mTiltEnabled ? 0f : 1.0f)
-                            .alpha(0)
-                            .setDuration(mAnimationTime)
-                            .setListener(new AnimatorListenerAdapter() {
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    performDismiss();
-                                }
-                            });
+                    recycle();
                     mCallbacks.onSwiping(0);
+                    mCallbacks.onDismiss(mView);
                     // mSwiping指翻滚中 翻滚状态下如果不满足dimiss的操作 会停止动画 还原
                 } else if (mSwiping) {
                     // cancel
@@ -134,17 +125,10 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
                             .scaleX(1.0f)
                             .scaleY(1.0f)
                             .alpha(1)
-                            .setDuration(mAnimationTime)
                             .setListener(null);
                     mCallbacks.onSwiping(1);
+                    recycle();
                 }
-                mVelocityTracker.recycle();
-                mVelocityTracker = null;
-                mTranslationX = 0;
-                mTranslationY = 0;
-                mDownX = 0;
-                mDownY = 0;
-                mSwiping = false;
                 break;
             }
 
@@ -161,16 +145,9 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
                         .scaleX(1.0f)
                         .scaleY(1.0f)
                         .alpha(1)
-                        .setDuration(mAnimationTime)
                         .setListener(null);
                 mCallbacks.onSwiping(1);
-                mVelocityTracker.recycle();
-                mVelocityTracker = null;
-                mTranslationX = 0;
-                mTranslationY = 0;
-                mDownX = 0;
-                mDownY = 0;
-                mSwiping = false;
+                recycle();
                 break;
             }
 
@@ -219,6 +196,16 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
         return false;
     }
 
+    private void recycle() {
+        mVelocityTracker.recycle();
+        mVelocityTracker = null;
+        mTranslationX = 0;
+        mTranslationY = 0;
+        mDownX = 0;
+        mDownY = 0;
+        mSwiping = false;
+    }
+
     // 执行dimiss操作
     private void performDismiss() {
         final ViewGroup.LayoutParams lp = mView.getLayoutParams();
@@ -230,7 +217,6 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
             @Override
             public void onAnimationEnd(Animator animation) {
                 //回调
-                mCallbacks.onDismiss(mView);
                 //重置View 如果你在onDismiss中dimiss了dialog是看不到效果的
                 mView.setAlpha(1f);
                 mView.setTranslationX(0);
@@ -253,4 +239,5 @@ public class SwipeDismissTouchListener implements View.OnTouchListener {
 
         animator.start();
     }
+
 }
