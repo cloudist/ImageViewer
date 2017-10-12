@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.imageviewer.adapter.ViewpagerCommonAdapter;
+import cn.imageviewer.helper.OnDestroyCallback;
 import cn.imageviewer.helper.OnImageLongClickListener;
 import cn.imageviewer.helper.OnImageSingleClickListener;
 import cn.imageviewer.helper.OnLoadListener;
 import cn.imageviewer.helper.ImageLoader;
+import cn.imageviewer.helper.OnPageChangeListener;
 import cn.imageviewer.view.ImageViewer;
 import uk.co.senab.photoview.PhotoView;
 
@@ -60,6 +62,18 @@ public class MainActivity extends AppCompatActivity {
                         new CustomViewpagerAdapter(MainActivity.this))
                         .setIndex(3)
                         .setPaths(paths)
+                        .setOnDestroyCallback(new OnDestroyCallback() {
+                            @Override
+                            public void onDestroy(int position) {
+                                Toast.makeText(MainActivity.this, "OnDestroyCallback" + position, Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setOnPageChangeListener(new OnPageChangeListener() {
+                            @Override
+                            public void onChange(int position) {
+                                Toast.makeText(MainActivity.this, "OnPageChangeListener" + position, Toast.LENGTH_SHORT).show();
+                            }
+                        })
                         .setTransformerType(ImageViewer.TYPE_ZOOMOUT_TRANSFORMER)
                         .build()
                         .show(getSupportFragmentManager(), "ImageViewer");

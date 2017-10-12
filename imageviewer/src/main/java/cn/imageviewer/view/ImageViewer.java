@@ -3,7 +3,6 @@ package cn.imageviewer.view;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,7 +19,8 @@ import cn.imageviewer.adapter.ViewpagerAdapter;
 import cn.imageviewer.dragable.SwipeDismissTouchListener;
 import cn.imageviewer.dragable.SwipeableFrameLayout;
 import cn.imageviewer.helper.ImageLoader;
-import cn.imageviewer.helper.OnDismissCallback;
+import cn.imageviewer.helper.OnDestroyCallback;
+import cn.imageviewer.helper.OnPageChangeListener;
 import cn.imageviewer.tranformer.CubeOutTransformer;
 import cn.imageviewer.tranformer.DefaultTransformer;
 import cn.imageviewer.tranformer.DepthPageTransformer;
@@ -50,7 +50,8 @@ public class ImageViewer extends DialogFragment {
     List<String> paths = new ArrayList<>();
     ImageLoader imageLoader;
     ViewpagerAdapter adapter;
-    OnDismissCallback onDismissCallback;
+    OnDestroyCallback onDestroyCallback;
+    OnPageChangeListener onPageChangeListener;
     int extraDismissType = TYPE_NO_EXTRA_DIMISS;
 
     @Override
@@ -109,16 +110,26 @@ public class ImageViewer extends DialogFragment {
         super.onResume();
         //如果在onViewCreated 设置会出现设置无效的状况
         viewpager.setCurrentItem(index);
+
+        if (onPageChangeListener != null) {
+            viewpager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                @Override
+                public void onPageSelected(int position) {
+                    onPageChangeListener.onChange(position);
+                }
+            });
+        }
     }
 
     @Override
-    public void onDestroyView() {
-        if (onDismissCallback != null) {
-            onDismissCallback.onDismiss(viewpager.getCurrentItem());
+    public void onHiddenChanged(boolean hidden) {
+        if (hidden) {
+            if (onDestroyCallback != null) {
+                onDestroyCallback.onDestroy(viewpager.getCurrentItem());
+            }
         }
-        super.onDestroyView();
+        super.onHiddenChanged(hidden);
     }
-
 
     private void setupViewPager(ViewPager viewPager) {
         adapter.setImageLoader(imageLoader);
@@ -147,7 +158,8 @@ public class ImageViewer extends DialogFragment {
         int transformerType = TYPE_DEFAULT_TRANSFORMER;
         List<String> paths = new ArrayList<>();
         ImageLoader imageLoader;
-        OnDismissCallback onDismissCallback;
+        OnDestroyCallback onDestroyCallback;
+        OnPageChangeListener onPageChangeListener;
         ViewpagerAdapter adapter;
         int extraDismissType = TYPE_NO_EXTRA_DIMISS;
 
@@ -171,8 +183,13 @@ public class ImageViewer extends DialogFragment {
             return this;
         }
 
-        public Builder setOnDismissCallback(OnDismissCallback onDismissCallback) {
-            this.onDismissCallback = onDismissCallback;
+        public Builder setOnDestroyCallback(OnDestroyCallback onDestroyCallback) {
+            this.onDestroyCallback = onDestroyCallback;
+            return this;
+        }
+
+        public Builder setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
+            this.onPageChangeListener = onPageChangeListener;
             return this;
         }
 
@@ -188,8 +205,9 @@ public class ImageViewer extends DialogFragment {
             imageViewer.index = index;
             imageViewer.transformerType = transformerType;
             imageViewer.paths = paths;
-            imageViewer.onDismissCallback = onDismissCallback;
+            imageViewer.onDestroyCallback = onDestroyCallback;
             imageViewer.extraDismissType = extraDismissType;
+            imageViewer.onPageChangeListener = onPageChangeListener;
             return imageViewer;
         }
     }
