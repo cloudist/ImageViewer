@@ -37,6 +37,9 @@ public class ImageViewer extends DialogFragment {
     public static final int TYPE_DEPTHPAGE_TRANSFORMER = 1013;
     public static final int TYPE_ZOOMOUT_TRANSFORMER = 1014;
 
+    public static final int TYPE_NO_EXTRA_DIMISS = 2011;
+    public static final int TYPE_SWIPE_DIMISS = 2012;
+
     Window window;
 
     SwipeableFrameLayout layout;
@@ -48,6 +51,7 @@ public class ImageViewer extends DialogFragment {
     ImageLoader imageLoader;
     ViewpagerAdapter adapter;
     OnDismissCallback onDismissCallback;
+    int extraDismissType = TYPE_NO_EXTRA_DIMISS;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,23 +72,28 @@ public class ImageViewer extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (adapter != null) {
+            adapter.setImageViewer(this);
+        }
         viewpager = (FixedViewPager) view.findViewById(R.id.viewpager);
         layout = (SwipeableFrameLayout) view.findViewById(R.id.layout);
 
-        layout.setSwipeDismissTouchListener(new SwipeDismissTouchListener(new SwipeDismissTouchListener.DismissCallbacks() {
+        if (extraDismissType == TYPE_SWIPE_DIMISS) {
+            layout.setSwipeDismissTouchListener(new SwipeDismissTouchListener(new SwipeDismissTouchListener.DismissCallbacks() {
 
-            @Override
-            public void onDismiss(View view) {
-                dismiss();
-            }
+                @Override
+                public void onDismiss(View view) {
+                    dismiss();
+                }
 
-            @Override
-            public void onSwiping(float degree) {
-                WindowManager.LayoutParams windowParams = window.getAttributes();
-                windowParams.dimAmount = 0.8f * degree;
-                window.setAttributes(windowParams);
-            }
-        }));
+                @Override
+                public void onSwiping(float degree) {
+                    WindowManager.LayoutParams windowParams = window.getAttributes();
+                    windowParams.dimAmount = 0.8f * degree;
+                    window.setAttributes(windowParams);
+                }
+            }));
+        }
 
         setupViewPager(viewpager);
     }
@@ -104,10 +113,10 @@ public class ImageViewer extends DialogFragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         if (onDismissCallback != null) {
             onDismissCallback.onDismiss(viewpager.getCurrentItem());
         }
+        super.onDestroyView();
     }
 
 
@@ -140,6 +149,7 @@ public class ImageViewer extends DialogFragment {
         ImageLoader imageLoader;
         OnDismissCallback onDismissCallback;
         ViewpagerAdapter adapter;
+        int extraDismissType = TYPE_NO_EXTRA_DIMISS;
 
         public Builder(ImageLoader imageLoader, ViewpagerAdapter adapter) {
             this.adapter = adapter;
@@ -166,6 +176,11 @@ public class ImageViewer extends DialogFragment {
             return this;
         }
 
+        public Builder setExtraDismissType(int extraDismissType) {
+            this.extraDismissType = extraDismissType;
+            return this;
+        }
+
         public ImageViewer build() {
             ImageViewer imageViewer = new ImageViewer();
             imageViewer.adapter = adapter;
@@ -174,6 +189,7 @@ public class ImageViewer extends DialogFragment {
             imageViewer.transformerType = transformerType;
             imageViewer.paths = paths;
             imageViewer.onDismissCallback = onDismissCallback;
+            imageViewer.extraDismissType = extraDismissType;
             return imageViewer;
         }
     }

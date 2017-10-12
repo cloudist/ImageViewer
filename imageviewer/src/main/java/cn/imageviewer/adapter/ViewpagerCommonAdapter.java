@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 
 import cn.imageviewer.R;
 import cn.imageviewer.helper.OnLoadListener;
+import cn.imageviewer.view.ImageViewer;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -32,14 +33,14 @@ public class ViewpagerCommonAdapter extends ViewpagerAdapter {
     }
 
     @Override
-    protected void loadImage(final int position, String path, View view) {
+    protected void loadImage(final int position, String path, View view, final ImageViewer imageViewer) {
         final PhotoView photoView = (PhotoView) view.findViewById(R.id.dialog_image);
 
         if (onImageSingleClickListener != null) {
             photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
                 public void onPhotoTap(View view, float x, float y) {
-                    onImageSingleClickListener.onImageSingleClick(position, paths.get(position), photoView);
+                    onImageSingleClickListener.onImageSingleClick(position, paths.get(position), photoView, imageViewer);
                 }
             });
         }
@@ -48,7 +49,7 @@ public class ViewpagerCommonAdapter extends ViewpagerAdapter {
             photoView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    return onImageLongClickListener.onImageLongClick(position, paths.get(position), photoView);
+                    return onImageLongClickListener.onImageLongClick(position, paths.get(position), photoView, imageViewer);
                 }
             });
         }

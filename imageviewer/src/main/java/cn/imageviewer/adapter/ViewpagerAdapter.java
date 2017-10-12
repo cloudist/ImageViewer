@@ -12,7 +12,7 @@ import java.util.List;
 import cn.imageviewer.helper.OnImageLongClickListener;
 import cn.imageviewer.helper.OnImageSingleClickListener;
 import cn.imageviewer.helper.ImageLoader;
-import cn.imageviewer.helper.OnLoadListener;
+import cn.imageviewer.view.ImageViewer;
 
 /**
  * Created by cloudist on 2017/6/28.
@@ -27,6 +27,8 @@ public abstract class ViewpagerAdapter extends PagerAdapter {
     protected ImageLoader imageLoader;
     protected OnImageSingleClickListener onImageSingleClickListener;
     protected OnImageLongClickListener onImageLongClickListener;
+
+    private ImageViewer imageViewer;
 
     public ViewpagerAdapter(Context context) {
         this.mContext = context;
@@ -53,7 +55,7 @@ public abstract class ViewpagerAdapter extends PagerAdapter {
         views.put(position, view);
         imageLoader.setView(view);
 
-        loadImage(position, paths.get(position), view);
+        loadImage(position, paths.get(position), view, imageViewer);
 
         return view;
     }
@@ -62,6 +64,10 @@ public abstract class ViewpagerAdapter extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         recycleImage(position, paths.get(position), (View) object);
         container.removeView((View) object);
+    }
+
+    public void setImageViewer(ImageViewer imageViewer) {
+        this.imageViewer = imageViewer;
     }
 
     public void setOnImageSingleClickListener(OnImageSingleClickListener onImageSingleClickListener) {
@@ -86,7 +92,7 @@ public abstract class ViewpagerAdapter extends PagerAdapter {
 
     protected abstract View initView(ViewGroup container, final int position);
 
-    protected abstract void loadImage(int position, String path, View view);
+    protected abstract void loadImage(int position, String path, View view, ImageViewer imageViewer);
 
     protected abstract void recycleImage(int position, String path, View view);
 

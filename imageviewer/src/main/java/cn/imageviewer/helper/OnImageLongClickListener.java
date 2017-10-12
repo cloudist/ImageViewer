@@ -1,5 +1,6 @@
 package cn.imageviewer.helper;
 
+import cn.imageviewer.view.ImageViewer;
 import uk.co.senab.photoview.PhotoView;
 
 /**
@@ -7,5 +8,5 @@ import uk.co.senab.photoview.PhotoView;
  */
 
 public interface OnImageLongClickListener {
-    boolean onImageLongClick(int position, String path, PhotoView photoView);
+    boolean onImageLongClick(int position, String path, PhotoView photoView, ImageViewer imageViewer);
 }
