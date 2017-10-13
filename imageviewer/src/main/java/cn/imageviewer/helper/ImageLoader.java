@@ -15,6 +15,9 @@ public abstract class ImageLoader {
     public abstract void showImage(int position, String path, ImageView imageView);
 
     public void recycleImage(ImageView imageView) {
+        if (imageView == null) {
+            return;
+        }
         imageView.setImageDrawable(null);
     }
 

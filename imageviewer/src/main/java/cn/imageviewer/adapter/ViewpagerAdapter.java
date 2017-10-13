@@ -62,8 +62,19 @@ public abstract class ViewpagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        recycleImage(position, paths.get(position), (View) object);
+        recycleImage((View) object);
         container.removeView((View) object);
+    }
+
+    public void recycleAllImage() {
+        if (views == null) {
+            return;
+        }
+
+        for(int i = 0; i < views.size(); i++) {
+            int key = views.keyAt(i);
+            recycleImage(views.get(key));
+        }
     }
 
     public void setImageViewer(ImageViewer imageViewer) {
@@ -94,6 +105,6 @@ public abstract class ViewpagerAdapter extends PagerAdapter {
 
     protected abstract void loadImage(int position, String path, View view, ImageViewer imageViewer);
 
-    protected abstract void recycleImage(int position, String path, View view);
+    protected abstract void recycleImage(View view);
 
 }

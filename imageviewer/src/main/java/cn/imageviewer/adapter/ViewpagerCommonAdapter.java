@@ -58,7 +58,7 @@ public class ViewpagerCommonAdapter extends ViewpagerAdapter {
     }
 
     @Override
-    protected void recycleImage(int position, String path, View view) {
+    protected void recycleImage(View view) {
         final PhotoView photoView = (PhotoView) view.findViewById(R.id.dialog_image);
         imageLoader.recycleImage(photoView);
     }

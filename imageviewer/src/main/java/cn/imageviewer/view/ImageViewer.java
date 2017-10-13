@@ -122,13 +122,12 @@ public class ImageViewer extends DialogFragment {
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (hidden) {
-            if (onDestroyCallback != null) {
-                onDestroyCallback.onDestroy(viewpager.getCurrentItem());
-            }
+    public void onDestroyView() {
+        if (onDestroyCallback != null) {
+            onDestroyCallback.onDestroy(viewpager.getCurrentItem());
         }
-        super.onHiddenChanged(hidden);
+        adapter.recycleAllImage();
+        super.onDestroyView();
     }
 
     private void setupViewPager(ViewPager viewPager) {
