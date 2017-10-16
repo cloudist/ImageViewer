@@ -62,18 +62,7 @@ public class MainActivity extends AppCompatActivity {
                         new CustomViewpagerAdapter(MainActivity.this))
                         .setIndex(3)
                         .setPaths(paths)
-                        .setOnDestroyCallback(new OnDestroyCallback() {
-                            @Override
-                            public void onDestroy(int position) {
-                                Toast.makeText(MainActivity.this, "OnDestroyCallback" + position, Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setOnPageChangeListener(new OnPageChangeListener() {
-                            @Override
-                            public void onChange(int position) {
-                                Toast.makeText(MainActivity.this, "OnPageChangeListener" + position, Toast.LENGTH_SHORT).show();
-                            }
-                        })
+                        .setExtraDismissType(ImageViewer.TYPE_ELASTIC_DIMISS)
                         .setTransformerType(ImageViewer.TYPE_ZOOMOUT_TRANSFORMER)
                         .build()
                         .show(getSupportFragmentManager(), "ImageViewer");

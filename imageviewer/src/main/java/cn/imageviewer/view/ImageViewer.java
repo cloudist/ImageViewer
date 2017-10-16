@@ -16,6 +16,7 @@ import java.util.List;
 
 import cn.imageviewer.R;
 import cn.imageviewer.adapter.ViewpagerAdapter;
+import cn.imageviewer.dragable.ElasticDismissListener;
 import cn.imageviewer.dragable.SwipeDismissTouchListener;
 import cn.imageviewer.dragable.SwipeableFrameLayout;
 import cn.imageviewer.helper.ImageLoader;
@@ -39,6 +40,7 @@ public class ImageViewer extends DialogFragment {
 
     public static final int TYPE_NO_EXTRA_DIMISS = 2011;
     public static final int TYPE_SWIPE_DIMISS = 2012;
+    public static final int TYPE_ELASTIC_DIMISS = 2013;
 
     Window window;
 
@@ -84,6 +86,25 @@ public class ImageViewer extends DialogFragment {
 
                 @Override
                 public void onDismiss(View view) {
+                    dismiss();
+                }
+
+                @Override
+                public void onSwiping(float degree) {
+                    WindowManager.LayoutParams windowParams = window.getAttributes();
+                    windowParams.dimAmount = 0.8f * degree;
+                    window.setAttributes(windowParams);
+                }
+            }));
+        } else if (extraDismissType == TYPE_ELASTIC_DIMISS) {
+            layout.setmElasticDismissListener(new ElasticDismissListener(new ElasticDismissListener.DismissCallbacks() {
+                @Override
+                public boolean canSwipe() {
+                    return true;
+                }
+
+                @Override
+                public void onDismiss(View view, boolean toTop) {
                     dismiss();
                 }
 

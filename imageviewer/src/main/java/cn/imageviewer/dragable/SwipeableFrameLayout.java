@@ -9,7 +9,8 @@ import android.widget.FrameLayout;
 
 public class SwipeableFrameLayout extends FrameLayout {
 
-    private SwipeDismissTouchListener mTouchListener;
+    private SwipeDismissTouchListener mSwipeDismissTouchListener;
+    private ElasticDismissListener mElasticDismissListener;
 
     public SwipeableFrameLayout(@NonNull Context context) {
         super(context);
@@ -19,18 +20,32 @@ public class SwipeableFrameLayout extends FrameLayout {
         super(context, attrs);
     }
 
-    public void setSwipeDismissTouchListener(SwipeDismissTouchListener touchListener) {
-        mTouchListener = touchListener;
-        mTouchListener.setView(this);
-        setOnTouchListener(touchListener);
+    public void setSwipeDismissTouchListener(SwipeDismissTouchListener swipeDismissTouchListener) {
+        mSwipeDismissTouchListener = swipeDismissTouchListener;
+        mSwipeDismissTouchListener.setView(this);
+        setOnTouchListener(swipeDismissTouchListener);
+        setClickable(true);
+    }
+
+    public void setmElasticDismissListener(ElasticDismissListener elasticDismissListener) {
+        mElasticDismissListener = elasticDismissListener;
+        mElasticDismissListener.setView(this);
+        setOnTouchListener(mElasticDismissListener);
         setClickable(true);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (mTouchListener != null) {
+        if (mSwipeDismissTouchListener != null) {
             //当有mTouchListener时 直接拦截onTouch事件
-            if (mTouchListener.onTouch(this, ev)) {
+            if (mSwipeDismissTouchListener.onTouch(this, ev)) {
+                return true;
+            }
+        }
+
+        if (mElasticDismissListener != null) {
+            //当有mTouchListener时 直接拦截onTouch事件
+            if (mElasticDismissListener.onTouch(this, ev)) {
                 return true;
             }
         }
