@@ -121,6 +121,10 @@ public class ImageViewer extends DialogFragment {
         }
     }
 
+    public void setCurrentPage(int page) {
+        index = page;
+    }
+
     @Override
     public void onDestroyView() {
         if (onDestroyCallback != null) {
