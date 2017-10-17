@@ -144,6 +144,7 @@ public class ImageViewer extends DialogFragment {
 
     public void setCurrentPage(int page) {
         index = page;
+        viewpager.setCurrentItem(index);
     }
 
     @Override
@@ -161,6 +162,7 @@ public class ImageViewer extends DialogFragment {
         viewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.imgeviewer_margin));
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(adapter);
+
         switch (transformerType) {
             case TYPE_CUBEOUT_TRANSFORMER:
                 viewPager.setPageTransformer(true, new CubeOutTransformer());
