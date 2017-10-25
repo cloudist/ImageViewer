@@ -26,7 +26,7 @@ public class CustomViewpagerAdapter extends ViewpagerAdapter {
     }
 
     @Override
-    protected void loadImage(final int position, String path, View view, ImageViewer imageViewer) {
+    protected void loadImage(final int position, Object path, View view, ImageViewer imageViewer) {
         final ImageView imageView = (ImageView) view.findViewById(R.id.image_demo);
         //自定义adapter也可以直接在内部设置点击事件
         imageView.setOnClickListener(new View.OnClickListener() {

@@ -8,5 +8,5 @@ import uk.co.senab.photoview.PhotoView;
  */
 
 public interface OnImageLongClickListener {
-    boolean onImageLongClick(int position, String path, PhotoView photoView, ImageViewer imageViewer);
+    boolean onImageLongClick(int position, Object path, PhotoView photoView, ImageViewer imageViewer);
 }

@@ -12,7 +12,7 @@ public abstract class ImageLoader {
     public OnLoadListener onLoadListener;
     public View view;
 
-    public abstract void showImage(int position, String path, ImageView imageView);
+    public abstract void showImage(int position, Object path, ImageView imageView);
 
     public void recycleImage(ImageView imageView) {
         if (imageView == null) {

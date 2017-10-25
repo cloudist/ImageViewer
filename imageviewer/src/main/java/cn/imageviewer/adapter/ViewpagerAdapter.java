@@ -18,9 +18,9 @@ import cn.imageviewer.view.ImageViewer;
  * Created by cloudist on 2017/6/28.
  */
 
-public abstract class ViewpagerAdapter extends PagerAdapter {
+public abstract class ViewpagerAdapter<T> extends PagerAdapter {
 
-    protected List<String> paths = new ArrayList<>();
+    protected List<T> paths = new ArrayList<>();
     protected SparseArray<View> views;
 
     protected Context mContext;
@@ -89,7 +89,7 @@ public abstract class ViewpagerAdapter extends PagerAdapter {
         this.onImageLongClickListener = onImageLongClickListener;
     }
 
-    public void setPaths(List<String> paths) {
+    public void setPaths(List<T> paths) {
         if (paths == null) {
             paths = new ArrayList<>();
         }
@@ -103,7 +103,7 @@ public abstract class ViewpagerAdapter extends PagerAdapter {
 
     protected abstract View initView(ViewGroup container, final int position);
 
-    protected abstract void loadImage(int position, String path, View view, ImageViewer imageViewer);
+    protected abstract void loadImage(int position, T path, View view, ImageViewer imageViewer);
 
     protected abstract void recycleImage(View view);
 

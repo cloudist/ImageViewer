@@ -31,7 +31,7 @@ import cn.imageviewer.tranformer.ZoomOutTranformer;
  * Created by cloudist on 2017/5/31.
  */
 
-public class ImageViewer extends DialogFragment {
+public class ImageViewer<T> extends DialogFragment {
 
     public static final int TYPE_DEFAULT_TRANSFORMER = 1011;
     public static final int TYPE_CUBEOUT_TRANSFORMER = 1012;
@@ -49,7 +49,7 @@ public class ImageViewer extends DialogFragment {
 
     int index = 0;
     int transformerType = TYPE_DEFAULT_TRANSFORMER;
-    List<String> paths = new ArrayList<>();
+    List<T> paths = new ArrayList<>();
     ImageLoader imageLoader;
     ViewpagerAdapter adapter;
     OnDestroyCallback onDestroyCallback;
