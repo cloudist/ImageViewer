@@ -27,7 +27,7 @@ import uk.co.senab.photoview.PhotoView;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<String> paths;
+    List<Object> paths;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -183,7 +183,7 @@ public class ImageViewer<T> extends DialogFragment {
     public static class Builder {
         int index = 0;
         int transformerType = TYPE_DEFAULT_TRANSFORMER;
-        List<String> paths = new ArrayList<>();
+        List<Object> paths = new ArrayList<>();
         ImageLoader imageLoader;
         OnDestroyCallback onDestroyCallback;
         OnPageChangeListener onPageChangeListener;
@@ -205,7 +205,7 @@ public class ImageViewer<T> extends DialogFragment {
             return this;
         }
 
-        public Builder setPaths(List<String> paths) {
+        public Builder setPaths(List<Object> paths) {
             this.paths = paths;
             return this;
         }
