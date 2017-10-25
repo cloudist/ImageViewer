@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         paths.add("http://tupian.enterdesk.com/2013/mxy/12/07/3/4.jpg");
         paths.add("http://pic.58pic.com/58pic/13/40/15/62958PICTq7_1024.jpg");
         paths.add("http://pic.qiantucdn.com/58pic/11/69/82/58PIC2Q58PICsY9.jpg");
-        paths.add("http://img05.tooopen.com/images/20150630/tooopen_sy_132344141259.jpg");
         paths.add("http://img3.3lian.com/2013/v11/41/d/81.jpg");
 
         button1.setOnClickListener(new View.OnClickListener() {
@@ -60,10 +59,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         },
                         new CustomViewpagerAdapter(MainActivity.this))
-                        .setIndex(3)
+                        .setIndex(0)
                         .setPaths(paths)
-                        .setExtraDismissType(ImageViewer.TYPE_ELASTIC_DIMISS)
-                        .setTransformerType(ImageViewer.TYPE_ZOOMOUT_TRANSFORMER)
                         .build()
                         .show(getSupportFragmentManager(), "ImageViewer");
             }

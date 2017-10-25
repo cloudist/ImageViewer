@@ -132,14 +132,15 @@ public class ImageViewer extends DialogFragment {
         //如果在onViewCreated 设置会出现设置无效的状况
         viewpager.setCurrentItem(index);
 
-        if (onPageChangeListener != null) {
-            viewpager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                @Override
-                public void onPageSelected(int position) {
+        viewpager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                index = position;
+                if (onPageChangeListener != null) {
                     onPageChangeListener.onChange(position);
                 }
-            });
-        }
+            }
+        });
     }
 
     public void setCurrentPage(int page) {
