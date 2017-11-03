@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -15,13 +14,11 @@ import com.bumptech.glide.request.target.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.imageviewer.adapter.ViewpagerCommonAdapter;
-import cn.imageviewer.helper.OnDestroyCallback;
+import cn.imageviewer.adapter.ViewpagerAdapter;
 import cn.imageviewer.helper.OnImageLongClickListener;
 import cn.imageviewer.helper.OnImageSingleClickListener;
 import cn.imageviewer.helper.OnLoadListener;
 import cn.imageviewer.helper.ImageLoader;
-import cn.imageviewer.helper.OnPageChangeListener;
 import cn.imageviewer.view.ImageViewer;
 import uk.co.senab.photoview.PhotoView;
 
@@ -49,72 +46,45 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ImageViewer.Builder(
-                        new ImageLoader() {
-                            @Override
-                            public void showImage(int position, Object path, ImageView imageView) {
-                                Glide.with(OCApplication.getContext())
-                                        .load(path)
-                                        .into(imageView);
-                            }
-                        },
-                        new CustomViewpagerAdapter(MainActivity.this))
-                        .setIndex(0)
-                        .setPaths(paths)
-                        .build()
-                        .show(getSupportFragmentManager(), "ImageViewer");
-            }
-        });
-
-        final ViewpagerCommonAdapter viewpagerCommonAdapter = new ViewpagerCommonAdapter(MainActivity.this);
-
-        viewpagerCommonAdapter.setOnImageSingleClickListener(new OnImageSingleClickListener() {
-            @Override
-            public void onImageSingleClick(int position, Object path, PhotoView photoView, ImageViewer imageViewer1) {
-                imageViewer1.dismiss();
-            }
-        });
-
-        viewpagerCommonAdapter.setOnImageLongClickListener(new OnImageLongClickListener() {
-            @Override
-            public boolean onImageLongClick(int position, Object path, PhotoView photoView, ImageViewer imageViewer2) {
-                imageViewer2.dismiss();
-                return false;
+//                new ImageViewer.Builder(
+//                        new ImageLoader() {
+//                            @Override
+//                            public void showImage(int position, Object path, ImageView imageView) {
+//                                Glide.with(OCApplication.getContext())
+//                                        .load(path)
+//                                        .into(imageView);
+//                            }
+//                        },
+//                        new CustomViewpagerAdapter(MainActivity.this))
+//                        .setIndex(0)
+//                        .setPaths(paths)
+//                        .build()
+//                        .show(getSupportFragmentManager(), "ImageViewer");
             }
         });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ImageViewer.Builder(
+                new ImageViewer.Builder(MainActivity.this,
                         new ImageLoader() {
                             @Override
                             public void showImage(final int position, Object path, ImageView imageView) {
-                                final OnLoadListener loadListener = this.getOnLoadListener();
-                                final View view = this.getView();
-                                loadListener.onStart(position);
                                 Glide.with(OCApplication.getContext())
                                         .load(path.toString())
-                                        .listener(new RequestListener<String, GlideDrawable>() {
-                                            @Override
-                                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                                loadListener.onError(position);
-                                                return false;
-                                            }
-
-                                            @Override
-                                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                                loadListener.onSuccess(position);
-                                                return false;
-                                            }
-                                        })
                                         .into(imageView);
                             }
-                        },
-                        viewpagerCommonAdapter)
+                        })
                         .setIndex(2)
                         .setPaths(paths)
                         .setTransformerType(ImageViewer.TYPE_CUBEOUT_TRANSFORMER)
+                        .setOnImageLongClickListener(new OnImageLongClickListener() {
+                            @Override
+                            public boolean onImageLongClick(int position, Object path, PhotoView photoView, ImageViewer imageViewer) {
+                                imageViewer.dismiss();
+                                return false;
+                            }
+                        })
                         .build()
                         .show(getSupportFragmentManager(), "ImageViewer");
             }

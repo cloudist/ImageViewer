@@ -15,21 +15,4 @@
         android:scaleType="fitCenter"
         android:src="@color/image_viewer_black_deep" />
 
-    <RelativeLayout
-        android:id="@+id/progressBar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/image_viewer_transparent"
-        android:clickable="true"
-        android:focusable="true"
-        android:visibility="gone">
-
-        <android.support.v4.widget.ContentLoadingProgressBar
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_centerInParent="true" />
-
-    </RelativeLayout>
-
 </RelativeLayout>

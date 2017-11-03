@@ -1,5 +1,6 @@
 package cn.imageviewer.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -21,6 +22,8 @@ import cn.imageviewer.dragable.SwipeDismissTouchListener;
 import cn.imageviewer.dragable.SwipeableFrameLayout;
 import cn.imageviewer.helper.ImageLoader;
 import cn.imageviewer.helper.OnDestroyCallback;
+import cn.imageviewer.helper.OnImageLongClickListener;
+import cn.imageviewer.helper.OnImageSingleClickListener;
 import cn.imageviewer.helper.OnPageChangeListener;
 import cn.imageviewer.tranformer.CubeOutTransformer;
 import cn.imageviewer.tranformer.DefaultTransformer;
@@ -31,7 +34,7 @@ import cn.imageviewer.tranformer.ZoomOutTranformer;
  * Created by cloudist on 2017/5/31.
  */
 
-public class ImageViewer<T> extends DialogFragment {
+public class ImageViewer extends DialogFragment {
 
     public static final int TYPE_DEFAULT_TRANSFORMER = 1011;
     public static final int TYPE_CUBEOUT_TRANSFORMER = 1012;
@@ -49,7 +52,7 @@ public class ImageViewer<T> extends DialogFragment {
 
     int index = 0;
     int transformerType = TYPE_DEFAULT_TRANSFORMER;
-    List<T> paths = new ArrayList<>();
+    List<Object> paths = new ArrayList<>();
     ImageLoader imageLoader;
     ViewpagerAdapter adapter;
     OnDestroyCallback onDestroyCallback;
@@ -190,8 +193,8 @@ public class ImageViewer<T> extends DialogFragment {
         ViewpagerAdapter adapter;
         int extraDismissType = TYPE_NO_EXTRA_DIMISS;
 
-        public Builder(ImageLoader imageLoader, ViewpagerAdapter adapter) {
-            this.adapter = adapter;
+        public Builder(Context context, ImageLoader imageLoader) {
+            this.adapter = new ViewpagerAdapter(context);
             this.imageLoader = imageLoader;
         }
 
@@ -222,6 +225,16 @@ public class ImageViewer<T> extends DialogFragment {
 
         public Builder setExtraDismissType(int extraDismissType) {
             this.extraDismissType = extraDismissType;
+            return this;
+        }
+
+        public Builder setOnImageSingleClickListener(OnImageSingleClickListener onImageSingleClickListener) {
+            adapter.setOnImageSingleClickListener(onImageSingleClickListener);
+            return this;
+        }
+
+        public Builder setOnImageLongClickListener(OnImageLongClickListener onImageLongClickListener) {
+            adapter.setOnImageLongClickListener(onImageLongClickListener);
             return this;
         }
 
